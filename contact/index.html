@@ -3,20 +3,20 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Mikołaj Kamiński | My personal page and blog about software development</title>
+<title>Contact | Mikołaj Kamiński</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Mikołaj Kamiński" />
+<meta property="og:title" content="Contact" />
 <meta name="author" content="Mikołaj Kamiński" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Hello, my name is Mikołaj Kamiński, and I am a software developer specialized in .NET Core, avionics engineer and glider pilot." />
-<meta property="og:description" content="Hello, my name is Mikołaj Kamiński, and I am a software developer specialized in .NET Core, avionics engineer and glider pilot." />
-<link rel="canonical" href="https://mikolaj-kaminski.com/" />
-<meta property="og:url" content="https://mikolaj-kaminski.com/" />
+<meta name="description" content="My personal page and blog about software development" />
+<meta property="og:description" content="My personal page and blog about software development" />
+<link rel="canonical" href="https://mikolaj-kaminski.com/contact/" />
+<meta property="og:url" content="https://mikolaj-kaminski.com/contact/" />
 <meta property="og:site_name" content="Mikołaj Kamiński" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Mikołaj Kamiński" />
+<meta property="twitter:title" content="Contact" />
 <script type="application/ld+json">
-{"@type":"WebSite","description":"Hello, my name is Mikołaj Kamiński, and I am a software developer specialized in .NET Core, avionics engineer and glider pilot.","headline":"Mikołaj Kamiński","url":"https://mikolaj-kaminski.com/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"name":"Mikołaj Kamiński","@context":"https://schema.org"}</script>
+{"@type":"WebPage","description":"My personal page and blog about software development","headline":"Contact","url":"https://mikolaj-kaminski.com/contact/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><!-- Material Icons -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -43,21 +43,88 @@
   </header>
   <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
-  
+        <article class="post">
 
+  <header class="post-header">
+    <h1 class="post-title">Contact</h1>
+  </header>
 
+  <div class="post-content">
+    <p>Hi! If you want to contact me, use the form below or try to catch me on social media :-)</p>
 
-  <ul class="post-list"><li>
-        <span class="post-meta">Apr 8, 2021</span>
-        <h3>
-          <a class="post-link" href="/nginx/docker/2021/04/08/nginx-as-reverse-proxy-with-docker.html">
-            How to configure Nginx reverse proxy with Docker?
-          </a>
-        </h3><p>How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example.</p>
-</li></ul>
+<!-- TBD -->
 
+<form action="https://formspree.io/f/xzbknjeb" method="POST" id="contact-form">
+    <div class="field">
+        <label class="label">Your Name</label>
+        <div class="control has-icons-left">
+            <input class="input" type="text" placeholder="Your name" name="author" required="" autofocus="" minlength="1" />
+            <span class="icon is-small is-left">
+                <span class="material-icons">face</span>
+            </span>
+        </div>
     </div>
+
+    <div class="field">
+        <label class="label">Your Email</label>
+        <div class="control has-icons-left">
+            <input class="input" type="email" placeholder="your@email.com" name="_replyto" required="" />
+            <span class="icon is-small is-left">
+                <span class="material-icons">mail</span>
+            </span>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Your Message</label>
+        <div class="control">
+            <textarea class="textarea has-fixed-size" placeholder="Your message..." name="message" required="" spellcheck="true" minlength="5"></textarea>
+        </div>
+    </div>
+
+    <div class="field has-text-centered">
+        <p id="status" class="help is-hidden"></p>
+        <div class="control">
+            <button type="submit" class="button is-link">Send Message</button>
+        </div>
+    </div>
+</form>
+<script>
+    var form = document.querySelector('#contact-form');
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = form.querySelector("#status");
+      var submit_button = form.querySelector("button[type=submit]");
+      submit_button.classList.add('is-loading');
+      submit_button.classList.add('is-disabled');
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        status.classList.add('is-success');
+        status.innerHTML = "Thanks for your submission!";
+        form.reset();
+      }).catch(error => {
+        status.classList.add('is-danger');
+        status.innerHTML = "Oops! There was a problem submitting your form"
+      }).finally(() => {
+        status.classList.remove('is-hidden');
+        submit_button.classList.remove('is-loading');
+        submit_button.classList.remove('is-disabled');
+      });
+    }
+    form.addEventListener("submit", handleSubmit)
+</script>
+
+
+  </div>
+
+</article>
 
       </div>
     </main><footer class="site-footer">
