@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to configure Nginx reverse proxy with Docker? | Mikołaj Kamiński</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to configure Nginx reverse proxy with Docker?" />
+<meta name="author" content="Mikołaj Kamiński" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example." />
+<meta property="og:description" content="How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example." />
+<link rel="canonical" href="https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/" />
+<meta property="og:url" content="https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/" />
+<meta property="og:site_name" content="Mikołaj Kamiński" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-08T15:30:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to configure Nginx reverse proxy with Docker?" />
+<script type="application/ld+json">
+{"headline":"How to configure Nginx reverse proxy with Docker?","dateModified":"2021-04-08T15:30:00+00:00","datePublished":"2021-04-08T15:30:00+00:00","description":"How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example.","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/"},"url":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
+<script>
+  window['ga-disable-G-JW1354ZTBQ'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JW1354ZTBQ');
+</script>
+<!-- Material Icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+
+<!-- Progress Bar -->
+<script>
+  window.addEventListener('load', function () {
+    var progress_bar = document.createElement('div');
+    progress_bar.setAttribute('class', 'progress');
+    document.body.prepend(progress_bar);
+
+    var h = document.documentElement,
+      b = document.body,
+      st = 'scrollTop',
+      sh = 'scrollHeight',
+      scroll;
+
+    var update_scroll = function () {
+      scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+      progress_bar.style.setProperty('--scroll', scroll + '%');
+    }
+
+    document.addEventListener('scroll', update_scroll);
+    document.addEventListener('resize', update_scroll);
+  });
+</script>
+<!--  -->
+<script>
+  window.addEventListener('load', function () {
+    document
+    .querySelectorAll('article p a')
+    .forEach(function(link) {
+      link.setAttribute('target', '_blank');
+    });
+  });
+</script>
+
+
+<!-- Favicon -->
+<link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAWFhYADo6OgB0dHQAqZ+WAFZWVgBHR0cAODg4AMG6tQApKSkAubKrAFRUVABFRUUANjY2AD6wQgCmm5IAF63iAFJSUgBDQ0MANDQ0AO3p5gC9trEAJSUlALqyrAC2rqcAqKioAEFBQQChlYsAMjIyAF1dXQBOTk4AtaylAD8/PwAwMDAAISEhANHR0QBbW1sAycO/AD09PQAuLi4A3t7eAM/PzwD19PIAWVlZAOHb1gA7OzsAnI+FACwsLACupJwAV1dXALLltABISEgAOTk5ACoqKgBVVVUAra2tAEZGRgC4u/EANzc3ACgoKACroJgAU1NTAEpP0wBEREQA7ernADU1NQAmJiYAvreyAMjEvwBCQkIAMzMzAMXAugAkJCQAQEBAADExMQCyqaEAIiIiAFxcXAA+Pj4ALy8vALCnnwAgICAAWlpaAOHc1wBLS0sAyMK+ADw8PADDvrkALS0tAJTk9gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAET0LNgUxMQErUiRNTR0ABB4mJk4gGkUSPww4ODNSADBUBzQCViYgIBpFRT8MMQBLBkYTDTo0Ai1WTiBJGjYAGEVPIUpGEw0NBwItJiYRABcmCSM3J09KHBMNOgcCHgBDNBZCKAM1L1hPShwTQVQACBNRKRlIFkI7NS9YT0o4AFcTUSJMSBZCOzUvWE9KOABHShxGE0ENOjQtViYgGhIAJTlZMhQUFBQUFBQUFBQqAAA+EA4sLCwsLCwsLCxTQAAAAERVRwgVCh9QPA8bLgAAAAAAAAAAAAAAAAAAAAAAAP//AAD//wAAgAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAACAAQAAwAMAAP//AAA=" rel="icon" type="image/x-icon" />
+
+
+<!-- Plausible -->
+<script async defer data-domain="mikolaj-kaminski.com" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Mikołaj Kamiński</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/">Home</a><a class="page-link" href="/about/">About me</a><a class="page-link" href="/contact/">Contact</a></div>
+        </nav></div>
+  </header>
+  <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header class="post-header">
+        <h1 class="post-title p-name" itemprop="name headline">How to configure Nginx reverse proxy with Docker?</h1>
+        <p class="post-meta"><time class="dt-published" datetime="2021-04-08T15:30:00+00:00" itemprop="datePublished">
+                Apr 8, 2021
+            </time></p>
+    </header>
+
+    <div class="post-content e-content" itemprop="articleBody">
+        <p>How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example.</p>
+
+<h2 id="what-do-we-want-to-achieve">What do we want to achieve?</h2>
+
+<p>One picture says more than a thousand words. Take a look at the diagram below.</p>
+
+<figure style="border: 1px solid #ddd; padding: 1em 1em 0 1em; border-radius:5px; width: max-content; margin-left: auto; margin-right: auto; max-width: 100%;"><img class="image is-centered" src="/assets/2021-04/2021-04-08-nginx-as-reverse-proxy-with-docker/reverse-proxy-infrastructure.png" style="max-width:100%; margin:auto" alt="Our example architecture" title="Our example architecture" loading="lazy" />
+        <figcaption class="has-text-centered" style="padding: 0.5em">Our example architecture</figcaption></figure>
+
+<p>Our sample infrastructure will consist of:</p>
+
+<ul>
+  <li>Nginx configured as a reverse proxy,</li>
+  <li>Two Nginx instances as services behind proxy.</li>
+</ul>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>To begin with, we define the structure of the files and directories that will be discussed:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
+├── docker-compose.yml      <span class="c"># infrastructure definition</span>
+├── nginx_configs           <span class="c"># proxy configuration files</span>
+│   ├── default.conf
+│   ├── service_a.conf
+│   └── service_b.conf
+├── proxy                   <span class="c"># proxy HTML contents</span>
+│   └── index.html
+├── service_a               <span class="c"># service_a HTML contents</span>
+│   └── index.html
+└── service_b               <span class="c"># service_b HTML contents</span>
+    └── index.html
+</code></pre></div></div>
+
+<h3 id="infrastructure-definition">Infrastructure definition</h3>
+
+<p>To quickly set up our infrastructure, we will use the following <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">proxy</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./nginx_configs/:/etc/nginx/conf.d/:ro</span>
+      <span class="pi">-</span> <span class="s">./proxy/:/usr/share/nginx/html/:ro</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:80"</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">internal-network</span>
+  <span class="na">service_a</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">service_a</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./service_a/:/usr/share/nginx/html/:ro</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">internal-network</span>
+  <span class="na">service_b</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">service_b</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./service_b/:/usr/share/nginx/html/:ro</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">internal-network</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">internal-network</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<p>Service A and service B have to be in the same network as proxy. In our case it is a network called <code class="language-plaintext highlighter-rouge">internal-network</code>.</p>
+
+<p>I also gave both services a hostname. Internal Docker DNS resolver will point at our services by their hostnames.</p>
+
+<p>We would like to expose our proxy to the world. To achieve it I exposed proxy HTTP port.</p>
+
+<h3 id="proxy-configuration">Proxy configuration</h3>
+
+<p>I mounted the directory with our proxy configuration files. Let’s configure a proxy so that it can route traffic to our services.</p>
+
+<p><code class="language-plaintext highlighter-rouge">nginx_configs/service_a.conf</code> contents:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">upstream</span> <span class="s">service_a</span> <span class="p">{</span>
+    <span class="c1"># Here we configure Nginx where to redirect the traffic</span>
+    <span class="kn">server</span> <span class="s">service_a:80</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="c1"># The port on which our proxy is listening </span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="c1"># Domain for which traffic is to be redirected</span>
+    <span class="kn">server_name</span> <span class="s">service_a.example.com</span><span class="p">;</span>
+
+    <span class="c1"># Forward Host header</span>
+    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+
+    <span class="c1"># We want all locations to point to service A</span>
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="c1"># service_a is our upstream</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://service_a</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">nginx_configs/service_b.conf</code> contents:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">upstream</span> <span class="s">service_b</span> <span class="p">{</span>
+    <span class="kn">server</span> <span class="s">service_b:80</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">service_b.example.com</span><span class="p">;</span>
+
+    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://service_b</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following configuration allows the proxy to handle traffic going directly to it. If we do not define a default configuration, Nginx will direct traffic to the first service encountered in the configuration. We want to avoid this scenario.</p>
+
+<p><code class="language-plaintext highlighter-rouge">nginx_configs/default.conf</code> contents:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">root</span>    <span class="n">/usr/share/nginx/html</span><span class="p">;</span>
+        <span class="kn">index</span>   <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="services-configuration">Services configuration</h3>
+
+<p>To distinguish the services from each other, we will replace their default index.html files. By default, each Nginx instance will respond with the same content, and we won’t be able to tell them apart when testing.</p>
+
+<p>Create <code class="language-plaintext highlighter-rouge">proxy/index.html</code> file with following contents:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This is proxy service
+</code></pre></div></div>
+
+<p>Then <code class="language-plaintext highlighter-rouge">service_a/index.html</code>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This is service A
+</code></pre></div></div>
+
+<p>And finally <code class="language-plaintext highlighter-rouge">service_b/index.html</code>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This is service B
+</code></pre></div></div>
+
+<h2 id="testing">Testing</h2>
+
+<p>Now is the time to get our infrastructure up and running and test the proxy server. Run docker-compose and wait for all containers to start working.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<p>Then make the following requests to our proxy.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-s</span> http://localhost:8080
+This is proxy service
+<span class="nv">$ </span>curl <span class="nt">-s</span> <span class="nt">-H</span> <span class="s2">"Host: service_a.example.com"</span> http://localhost:8080
+This is service A
+<span class="nv">$ </span>curl <span class="nt">-s</span> <span class="nt">-H</span> <span class="s2">"Host: service_b.example.com"</span> http://localhost:8080
+This is service B
+</code></pre></div></div>
+
+<p>Seems to be working!</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>As you can see, setting up a simple reverse proxy is easy. It is worth mentioning that the proxy configured in this way is not properly secured (no SSL support). However, security is not the topic of this post.</p>
+
+<p>I put the whole example into the GitHub repository. You can find it <a href="https://github.com/mikasjp/docker-nginx-reverse-proxy-example">here</a>.</p>
+
+<p>If you have any questions or comments, please feel free to contact me.</p>
+
+    </div>
+
+    <div><!-- Subscribe Form --></div><a class="u-url" href="/nginx-as-reverse-proxy-with-docker/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer">
+    <div class="tile wrapper">
+        <div class="tile">
+            <!-- FIRST FOOTER COLUMN -->
+        </div>
+        <div class="tile">
+            <!-- SECOND FOOTER COLUMN -->
+        </div>
+        <div class="tile has-text-right has-text-centered-mobile">
+            <span style="display:block;margin-left:auto">
+                &copy; 2021 Mikołaj Kamiński
+                
+        </span>
+        </div>
+    </div>
+    <div class="tile wrapper">
+        <ul class="social-media-list">
+  <li><a rel="me" href="/feed.xml" title="RSS Feed"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg></a></li><li><a rel="me" href="https://github.com/mikasjp" title="mikasjp"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.instagram.com/mikolaj_kaminski_pl" title="mikolaj_kaminski_pl"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mikolaj-kaminski" title="mikolaj-kaminski"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/m_kaminski_" title="m_kaminski_"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>    
+    </div>
+</footer></body>
+
+</html>
