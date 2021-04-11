@@ -123,9 +123,11 @@
         status.classList.add('is-success');
         status.innerHTML = "Thanks for your submission!";
         form.reset();
+        plausible('Contact form submission');
       }).catch(error => {
         status.classList.add('is-danger');
-        status.innerHTML = "Oops! There was a problem submitting your form"
+        status.innerHTML = "Oops! There was a problem submitting your form";
+        plausible('Contact form error');
       }).finally(() => {
         status.classList.remove('is-hidden');
         submit_button.classList.remove('is-loading');
