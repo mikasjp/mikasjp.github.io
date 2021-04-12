@@ -1,5 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-11T16:57:10+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
-</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">Why do I find Ruby sexy?</title><link href="https://mikolaj-kaminski.com/why-ruby-is-sexy/" rel="alternate" type="text/html" title="Why do I find Ruby sexy?" /><published>2021-04-10T11:00:00+00:00</published><updated>2021-04-10T11:00:00+00:00</updated><id>https://mikolaj-kaminski.com/why-ruby-is-sexy</id><content type="html" xml:base="https://mikolaj-kaminski.com/why-ruby-is-sexy/">&lt;p&gt;I am a full time .NET developer, but I have been interested in Ruby for some time. Not very professional, but I liked this technology very much. I would like to share why I think so.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-12T06:17:50+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
+</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">Extension methods in C# and Ruby</title><link href="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/" rel="alternate" type="text/html" title="Extension methods in C# and Ruby" /><published>2021-04-12T06:00:00+00:00</published><updated>2021-04-12T06:00:00+00:00</updated><id>https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/">&lt;p&gt;Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.&lt;/p&gt;
+
+&lt;h2 id=&quot;c-extension-methods&quot;&gt;C# extension methods&lt;/h2&gt;
+
+&lt;p&gt;Let’s consider the following example class.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClass&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Mikołaj&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To extend it with a new method we have to implement another independent static class, which has an implementation of our extension method.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClassExtensions&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ExampleClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exampleClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&quot;Hello &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are two important things. The first parameter of the extension method have to be preceded by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; keyword and should be of the type on which the method is operating.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExampleClassExtensions&lt;/code&gt; can be named anything you like. It may also contain extension methods for classes other than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExampleClass&lt;/code&gt;. I named it so as to keep a clear naming convention.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-ruby-way&quot;&gt;The Ruby way&lt;/h2&gt;
+
+&lt;p&gt;Okay, so let’s start with our example class which will be extended with extra method.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClass&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_name&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;Mikołaj&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Implementation of an extension method is as simple as redefining our ExampleClass with an extra method. Take a look:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleClass&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;Hello &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;!&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That’s it. Super simple.&lt;/p&gt;
+
+&lt;h2 id=&quot;which-one-i-consider-to-be-better&quot;&gt;Which one I consider to be better?&lt;/h2&gt;
+
+&lt;p&gt;I really like simple solutions, so at first glance Ruby extension methods implementation seems better to me.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, the C# solution does not directly modify the class being extended. The notation is more complicated, but it provides a separation between the class and its extensions.&lt;/p&gt;
+
+&lt;p&gt;It’s hard for me to decide which solution is better. I’m just getting started with Ruby, and I have plans to study its object model better. I think it is too early to express my opinion on this.&lt;/p&gt;
+
+&lt;p&gt;If you have any interesting thoughts on this topic, please let me know!&lt;/p&gt;</content><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><category term="thoughts" /><category term="ruby" /><category term="csharp" /><summary type="html">Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.</summary></entry><entry><title type="html">Why do I find Ruby sexy?</title><link href="https://mikolaj-kaminski.com/why-ruby-is-sexy/" rel="alternate" type="text/html" title="Why do I find Ruby sexy?" /><published>2021-04-10T11:00:00+00:00</published><updated>2021-04-10T11:00:00+00:00</updated><id>https://mikolaj-kaminski.com/why-ruby-is-sexy</id><content type="html" xml:base="https://mikolaj-kaminski.com/why-ruby-is-sexy/">&lt;p&gt;I am a full time .NET developer, but I have been interested in Ruby for some time. Not very professional, but I liked this technology very much. I would like to share why I think so.&lt;/p&gt;
 
 &lt;figure style=&quot;border: 1px solid #ddd; padding: 1em 1em 0 1em; border-radius:5px; width: max-content; margin-left: auto; margin-right: auto; max-width: 100%;&quot;&gt;&lt;img class=&quot;image&quot; src=&quot;/assets/2021-04/2021-04-10-why-ruby-is-sexy/meme.png&quot; style=&quot;max-width:100%; margin:auto; padding-bottom: 1em;&quot; loading=&quot;lazy&quot; /&gt;&lt;/figure&gt;
 
