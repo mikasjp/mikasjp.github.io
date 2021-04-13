@@ -68,7 +68,7 @@
 
 <!-- TBD -->
 
-<form action="https://formspree.io/f/xzbknjeb" method="POST" id="contact-form">
+<form action="https://n8n.mikolaj-kaminski.pl/webhook/contact-form-submission" method="POST" id="contact-form">
     <div class="field">
         <label class="label">Your Name</label>
         <div class="control has-icons-left">
@@ -82,7 +82,7 @@
     <div class="field">
         <label class="label">Your Email</label>
         <div class="control has-icons-left">
-            <input class="input" type="email" placeholder="your@email.com" name="_replyto" required="" />
+            <input class="input" type="email" placeholder="your@email.com" name="email" required="" />
             <span class="icon is-small is-left">
                 <span class="material-icons">mail</span>
             </span>
@@ -97,12 +97,18 @@
     </div>
 
     <div class="field has-text-centered">
+        <div class="h-captcha" data-sitekey="6275d0e7-6e2a-40f8-b6b1-c93bd0bf9a5b"></div>
+    </div>
+
+    <div class="field has-text-centered">
         <p id="status" class="help is-hidden"></p>
         <div class="control">
             <button type="submit" class="button is-link">Send Message</button>
         </div>
     </div>
 </form>
+<script src="https://hcaptcha.com/1/api.js" async="" defer=""></script>
+
 <script>
     var form = document.querySelector('#contact-form');
     
@@ -120,14 +126,23 @@
             'Accept': 'application/json'
         }
       }).then(response => {
-        status.classList.add('is-success');
-        status.innerHTML = "Thanks for your submission!";
-        form.reset();
-        plausible('Contact form submission');
+        response.json().then(data => {
+            if (data.success) {
+                status.classList.add('is-success');
+                status.innerHTML = "Thanks for your submission!";
+                form.reset();
+                hcaptcha.reset();
+                if (typeof(plausible) == "function") plausible('Contact form submission');
+            } else {
+                status.classList.add('is-danger');
+                status.innerHTML = "Oops! There was a problem submitting your form";
+                if (typeof(plausible) == "function") plausible('Contact form soft error');
+            }
+        });
       }).catch(error => {
         status.classList.add('is-danger');
         status.innerHTML = "Oops! There was a problem submitting your form";
-        plausible('Contact form error');
+        if (typeof(plausible) == "function") plausible('Contact form error');
       }).finally(() => {
         status.classList.remove('is-hidden');
         submit_button.classList.remove('is-loading');
