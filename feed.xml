@@ -1,5 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-14T06:18:04+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
-</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">Extension methods in C# and Ruby</title><link href="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/" rel="alternate" type="text/html" title="Extension methods in C# and Ruby" /><published>2021-04-12T06:00:00+00:00</published><updated>2021-04-12T06:00:00+00:00</updated><id>https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/">&lt;p&gt;Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-14T19:30:06+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
+</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue</title><link href="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/" rel="alternate" type="text/html" title="ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue" /><published>2021-04-14T06:30:00+00:00</published><updated>2021-04-14T06:30:00+00:00</updated><id>https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/">&lt;p&gt;Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.&lt;/p&gt;
+
+&lt;h2 id=&quot;dynamic-properties-in-a-statically-typed-world&quot;&gt;Dynamic properties in a statically typed world&lt;/h2&gt;
+
+&lt;p&gt;One of the microservices handles the HTTP POST request which the body model is similar to this:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExampleModel&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JObject&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DynamicObject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For simplicity let’s say that exactly that request model is stored in NoSQL database and could be retrieved with another endpoint.&lt;/p&gt;
+
+&lt;p&gt;Another service calls our application with a following HTTP request body:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;dynamicObject&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;someStringProperty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2021-04-14T08:30:00.000+0000&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;anotherStringProperty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;QWERTY&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then requests it back and gets following response:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;dynamicObject&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;someStringProperty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2021-04-14T08:30:00Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;wtf?!&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;anotherStringProperty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;QWERTY&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;someStringProperty&lt;/code&gt; is different from what was sent before! In my case, this is unacceptable behavior. I need it to be exactly the same string.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;After a while of debugging I found a culprit. Newtonsoft JSON serializer parsed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;someStringProperty&lt;/code&gt; as a date. However, client service treats it as string. It turns out that this is default Newtonsoft JSON serializer behavior. It just guessed the type based on the value.&lt;/p&gt;
+
+&lt;p&gt;The solution is to create serializer with the following &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JsonSerializerSettings&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;JsonSerializerSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// by default it is DateParseHandling.DateTime&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;DateParseHandling&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateParseHandling&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;None&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;someStringProperty&lt;/code&gt; will be parsed as a string. Fixed!&lt;/p&gt;
+
+&lt;h2 id=&quot;one-more-thing&quot;&gt;One more thing&lt;/h2&gt;
+
+&lt;p&gt;While searching the internet for a solution to my problem, I came across an interesting open GitHub issue in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt; library repository. It is closely related to my problem. At the time of writing this post, it’s still open for &lt;strong&gt;almost 5 years&lt;/strong&gt;!&lt;/p&gt;
+
+&lt;p&gt;Take a look: &lt;a href=&quot;https://github.com/JamesNK/Newtonsoft.Json/issues/904&quot;&gt;“A string that looks like a date is changed when deserializing an ISerializable object #904”&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;Hopefully, writing this post will save someone from a long debugging session. If you have any interesting thoughts on this, or I helped you somehow, please let me know. I will be very pleased!&lt;/p&gt;</content><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><category term="csharp" /><category term="serialization" /><summary type="html">Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.</summary></entry><entry><title type="html">Extension methods in C# and Ruby</title><link href="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/" rel="alternate" type="text/html" title="Extension methods in C# and Ruby" /><published>2021-04-12T06:00:00+00:00</published><updated>2021-04-12T06:00:00+00:00</updated><id>https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/">&lt;p&gt;Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.&lt;/p&gt;
 
 &lt;h2 id=&quot;c-extension-methods&quot;&gt;C# extension methods&lt;/h2&gt;
 
