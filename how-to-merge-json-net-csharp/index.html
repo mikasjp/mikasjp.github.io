@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to merge JSON documents in .NET Core and .NET 5? | Mikołaj Kamiński</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to merge JSON documents in .NET Core and .NET 5?" />
+<meta name="author" content="Mikołaj Kamiński" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?" />
+<meta property="og:description" content="Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?" />
+<link rel="canonical" href="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/" />
+<meta property="og:url" content="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/" />
+<meta property="og:site_name" content="Mikołaj Kamiński" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-19T15:30:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to merge JSON documents in .NET Core and .NET 5?" />
+<script type="application/ld+json">
+{"headline":"How to merge JSON documents in .NET Core and .NET 5?","dateModified":"2021-04-19T15:30:00+00:00","datePublished":"2021-04-19T15:30:00+00:00","description":"Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/"},"url":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
+<script>
+  window['ga-disable-G-JW1354ZTBQ'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JW1354ZTBQ');
+</script>
+<!-- Material Icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+
+<!-- Progress Bar -->
+<script>
+  window.addEventListener('load', function () {
+    var progress_bar = document.createElement('div');
+    progress_bar.setAttribute('class', 'progress');
+    document.body.prepend(progress_bar);
+
+    var h = document.documentElement,
+      b = document.body,
+      st = 'scrollTop',
+      sh = 'scrollHeight',
+      scroll;
+
+    var update_scroll = function () {
+      scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+      progress_bar.style.setProperty('--scroll', scroll + '%');
+    }
+
+    document.addEventListener('scroll', update_scroll);
+    document.addEventListener('resize', update_scroll);
+  });
+</script>
+<!--  -->
+<script>
+  window.addEventListener('load', function () {
+    document
+    .querySelectorAll('article p a')
+    .forEach(function(link) {
+      link.setAttribute('target', '_blank');
+    });
+  });
+</script>
+
+
+<!-- Favicon -->
+<link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAWFhYADo6OgB0dHQAqZ+WAFZWVgBHR0cAODg4AMG6tQApKSkAubKrAFRUVABFRUUANjY2AD6wQgCmm5IAF63iAFJSUgBDQ0MANDQ0AO3p5gC9trEAJSUlALqyrAC2rqcAqKioAEFBQQChlYsAMjIyAF1dXQBOTk4AtaylAD8/PwAwMDAAISEhANHR0QBbW1sAycO/AD09PQAuLi4A3t7eAM/PzwD19PIAWVlZAOHb1gA7OzsAnI+FACwsLACupJwAV1dXALLltABISEgAOTk5ACoqKgBVVVUAra2tAEZGRgC4u/EANzc3ACgoKACroJgAU1NTAEpP0wBEREQA7ernADU1NQAmJiYAvreyAMjEvwBCQkIAMzMzAMXAugAkJCQAQEBAADExMQCyqaEAIiIiAFxcXAA+Pj4ALy8vALCnnwAgICAAWlpaAOHc1wBLS0sAyMK+ADw8PADDvrkALS0tAJTk9gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAET0LNgUxMQErUiRNTR0ABB4mJk4gGkUSPww4ODNSADBUBzQCViYgIBpFRT8MMQBLBkYTDTo0Ai1WTiBJGjYAGEVPIUpGEw0NBwItJiYRABcmCSM3J09KHBMNOgcCHgBDNBZCKAM1L1hPShwTQVQACBNRKRlIFkI7NS9YT0o4AFcTUSJMSBZCOzUvWE9KOABHShxGE0ENOjQtViYgGhIAJTlZMhQUFBQUFBQUFBQqAAA+EA4sLCwsLCwsLCxTQAAAAERVRwgVCh9QPA8bLgAAAAAAAAAAAAAAAAAAAAAAAP//AAD//wAAgAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAACAAQAAwAMAAP//AAA=" rel="icon" type="image/x-icon" />
+
+
+<!-- Plausible -->
+<script async defer data-domain="mikolaj-kaminski.com" src="https://plausible.io/js/plausible.js"></script>
+
+
+</head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Mikołaj Kamiński</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/">Home</a><a class="page-link" href="/about/">About me</a><a class="page-link" href="/contact/">Contact</a></div>
+        </nav></div>
+  </header>
+  <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header class="post-header">
+        <h1 class="post-title p-name" itemprop="name headline">How to merge JSON documents in .NET Core and .NET 5?</h1>
+        <p class="post-meta"><time class="dt-published" datetime="2021-04-19T15:30:00+00:00" itemprop="datePublished">
+                Apr 19, 2021
+            </time></p>
+    </header>
+
+    <div class="post-content e-content" itemprop="articleBody">
+        <p>Let’s say we have two JSON documents that we would like to merge. How can this be achieved?</p>
+
+<h2 id="using-newtonsoftjson">Using <code class="language-plaintext highlighter-rouge">Newtonsoft.Json</code></h2>
+
+<p>In .NET Core, until version 3 was released, the default serializer was the well-known and liked <a href="https://www.nuget.org/packages/Newtonsoft.Json/"><code class="language-plaintext highlighter-rouge">Newtonsoft.Json</code></a>. Merging JSON documents with this library is very simple:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">object_A</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">"{ 'A': 1, 'B': 2, 'C': 3 }"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">object_B</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">"{ 'C': 4, 'D': 5, 'E': 6 }"</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">object_C</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JObject</span><span class="p">();</span>
+<span class="n">object_C</span><span class="p">.</span><span class="nf">Merge</span><span class="p">(</span><span class="n">object_A</span><span class="p">);</span>
+<span class="n">object_C</span><span class="p">.</span><span class="nf">Merge</span><span class="p">(</span><span class="n">object_B</span><span class="p">);</span>
+<span class="cm">/*
+object_C is:
+{
+  "A": 1,
+  "B": 2,
+  "C": 4,
+  "D": 5,
+  "E": 6
+}
+*/</span>
+</code></pre></div></div>
+
+<h2 id="here-comes-systemtextjson">Here comes <code class="language-plaintext highlighter-rouge">System.Text.Json</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">System.Text.Json</code> was released with the release of .NET Core 3, and it is part of its runtime. However, it can be used with earlier versions of .NET Core by installing the appropriate <a href="https://www.nuget.org/packages/System.Text.Json">NuGet package</a>.</p>
+
+<p>So, how to merge JSON documents with a brand new, blazing fast library released by Microsoft? It turns out that at the time of writing this post, there is no user-friendly API implemented yet.</p>
+
+<p>Does that mean it is impossible? Definitely not. While looking for a way to solve this problem, I came across <a href="https://docs.microsoft.com/pl-pl/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-is-read-only">an article</a> on the Microsoft website that described the differences between <code class="language-plaintext highlighter-rouge">System.Text.Json</code> and <code class="language-plaintext highlighter-rouge">Newtonsoft.Json</code>.</p>
+
+<p>For performance reasons, the <code class="language-plaintext highlighter-rouge">JsonDocument</code> object is read-only as opposed to the <code class="language-plaintext highlighter-rouge">JObject</code>. For this reason, Microsoft has not implemented the Document Merge API. Fortunately, there is an API suggestion that is covered in <a href="https://github.com/dotnet/runtime/issues/31433">this GitHub issue</a>. It seems that the proposed API is faster than the API of the <code class="language-plaintext highlighter-rouge">Newtonsoft.Json</code> library.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Mean</th>
+      <th>Error</th>
+      <th>StdDev</th>
+      <th>Median</th>
+      <th>Min</th>
+      <th>Max</th>
+      <th>Ratio</th>
+      <th>Gen 0</th>
+      <th>Gen 1</th>
+      <th>Gen 2</th>
+      <th>Allocated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MergeNewtonsoft</td>
+      <td>29.01 us</td>
+      <td>0.570 us</td>
+      <td>0.656 us</td>
+      <td>28.84 us</td>
+      <td>28.13 us</td>
+      <td>30.19 us</td>
+      <td>1.00</td>
+      <td>7.0801</td>
+      <td>0.0610</td>
+      <td>-</td>
+      <td>28.98 KB</td>
+    </tr>
+    <tr>
+      <td>Merge_New</td>
+      <td>16.41 us</td>
+      <td>0.293 us</td>
+      <td>0.274 us</td>
+      <td>16.41 us</td>
+      <td>16.02 us</td>
+      <td>17.00 us</td>
+      <td>0.57</td>
+      <td>1.7090</td>
+      <td>-</td>
+      <td>-</td>
+      <td>6.99 KB</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I wonder if <code class="language-plaintext highlighter-rouge">System.Text.Json</code> will get such an API.</p>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>It looks like <code class="language-plaintext highlighter-rouge">System.Text.Json</code> will stay with us longer. Do you think there will be an official API implementation for merging JSON documents? Do you have any interesting thoughts on this topic? Let me know!</p>
+
+    </div>
+
+    <div><!-- Subscribe Form --></div><a class="u-url" href="/how-to-merge-json-net-csharp/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer">
+    <div class="tile wrapper">
+        <div class="tile">
+            <!-- FIRST FOOTER COLUMN -->
+        </div>
+        <div class="tile">
+            <!-- SECOND FOOTER COLUMN -->
+        </div>
+        <div class="tile has-text-right has-text-centered-mobile">
+            <span style="display:block;margin-left:auto">
+                &copy; 2021 Mikołaj Kamiński
+                
+        </span>
+        </div>
+    </div>
+    <div class="tile wrapper">
+        <ul class="social-media-list">
+  <li><a rel="me" href="/feed.xml" title="RSS Feed"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg></a></li><li><a rel="me" href="https://github.com/mikasjp" title="mikasjp"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.instagram.com/mikolaj_kaminski_pl" title="mikolaj_kaminski_pl"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mikolaj-kaminski" title="mikolaj-kaminski"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/m_kaminski_" title="m_kaminski_"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>    
+    </div>
+</footer></body>
+
+</html>

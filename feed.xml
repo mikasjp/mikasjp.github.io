@@ -1,5 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-17T19:37:37+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
-</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue</title><link href="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/" rel="alternate" type="text/html" title="ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue" /><published>2021-04-14T06:30:00+00:00</published><updated>2021-04-14T06:30:00+00:00</updated><id>https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/">&lt;p&gt;Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-19T17:18:42+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
+</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">How to merge JSON documents in .NET Core and .NET 5?</title><link href="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/" rel="alternate" type="text/html" title="How to merge JSON documents in .NET Core and .NET 5?" /><published>2021-04-19T15:30:00+00:00</published><updated>2021-04-19T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/how-to-merge-json-net-csharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/">&lt;p&gt;Let’s say we have two JSON documents that we would like to merge. How can this be achieved?&lt;/p&gt;
+
+&lt;h2 id=&quot;using-newtonsoftjson&quot;&gt;Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;In .NET Core, until version 3 was released, the default serializer was the well-known and liked &lt;a href=&quot;https://www.nuget.org/packages/Newtonsoft.Json/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt;&lt;/a&gt;. Merging JSON documents with this library is very simple:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{ &apos;A&apos;: 1, &apos;B&apos;: 2, &apos;C&apos;: 3 }&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_B&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{ &apos;C&apos;: 4, &apos;D&apos;: 5, &apos;E&apos;: 6 }&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_C&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;JObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;object_C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Merge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;object_C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Merge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object_B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*
+object_C is:
+{
+  &quot;A&quot;: 1,
+  &quot;B&quot;: 2,
+  &quot;C&quot;: 4,
+  &quot;D&quot;: 5,
+  &quot;E&quot;: 6
+}
+*/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;here-comes-systemtextjson&quot;&gt;Here comes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.Text.Json&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.Text.Json&lt;/code&gt; was released with the release of .NET Core 3, and it is part of its runtime. However, it can be used with earlier versions of .NET Core by installing the appropriate &lt;a href=&quot;https://www.nuget.org/packages/System.Text.Json&quot;&gt;NuGet package&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So, how to merge JSON documents with a brand new, blazing fast library released by Microsoft? It turns out that at the time of writing this post, there is no user-friendly API implemented yet.&lt;/p&gt;
+
+&lt;p&gt;Does that mean it is impossible? Definitely not. While looking for a way to solve this problem, I came across &lt;a href=&quot;https://docs.microsoft.com/pl-pl/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-is-read-only&quot;&gt;an article&lt;/a&gt; on the Microsoft website that described the differences between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.Text.Json&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;For performance reasons, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JsonDocument&lt;/code&gt; object is read-only as opposed to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JObject&lt;/code&gt;. For this reason, Microsoft has not implemented the Document Merge API. Fortunately, there is an API suggestion that is covered in &lt;a href=&quot;https://github.com/dotnet/runtime/issues/31433&quot;&gt;this GitHub issue&lt;/a&gt;. It seems that the proposed API is faster than the API of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt; library.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Method&lt;/th&gt;
+      &lt;th&gt;Mean&lt;/th&gt;
+      &lt;th&gt;Error&lt;/th&gt;
+      &lt;th&gt;StdDev&lt;/th&gt;
+      &lt;th&gt;Median&lt;/th&gt;
+      &lt;th&gt;Min&lt;/th&gt;
+      &lt;th&gt;Max&lt;/th&gt;
+      &lt;th&gt;Ratio&lt;/th&gt;
+      &lt;th&gt;Gen 0&lt;/th&gt;
+      &lt;th&gt;Gen 1&lt;/th&gt;
+      &lt;th&gt;Gen 2&lt;/th&gt;
+      &lt;th&gt;Allocated&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MergeNewtonsoft&lt;/td&gt;
+      &lt;td&gt;29.01 us&lt;/td&gt;
+      &lt;td&gt;0.570 us&lt;/td&gt;
+      &lt;td&gt;0.656 us&lt;/td&gt;
+      &lt;td&gt;28.84 us&lt;/td&gt;
+      &lt;td&gt;28.13 us&lt;/td&gt;
+      &lt;td&gt;30.19 us&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+      &lt;td&gt;7.0801&lt;/td&gt;
+      &lt;td&gt;0.0610&lt;/td&gt;
+      &lt;td&gt;-&lt;/td&gt;
+      &lt;td&gt;28.98 KB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Merge_New&lt;/td&gt;
+      &lt;td&gt;16.41 us&lt;/td&gt;
+      &lt;td&gt;0.293 us&lt;/td&gt;
+      &lt;td&gt;0.274 us&lt;/td&gt;
+      &lt;td&gt;16.41 us&lt;/td&gt;
+      &lt;td&gt;16.02 us&lt;/td&gt;
+      &lt;td&gt;17.00 us&lt;/td&gt;
+      &lt;td&gt;0.57&lt;/td&gt;
+      &lt;td&gt;1.7090&lt;/td&gt;
+      &lt;td&gt;-&lt;/td&gt;
+      &lt;td&gt;-&lt;/td&gt;
+      &lt;td&gt;6.99 KB&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I wonder if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.Text.Json&lt;/code&gt; will get such an API.&lt;/p&gt;
+
+&lt;h2 id=&quot;final-thoughts&quot;&gt;Final thoughts&lt;/h2&gt;
+
+&lt;p&gt;It looks like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System.Text.Json&lt;/code&gt; will stay with us longer. Do you think there will be an official API implementation for merging JSON documents? Do you have any interesting thoughts on this topic? Let me know!&lt;/p&gt;</content><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><category term="dotnet" /><category term="json" /><category term="serialization" /><category term="5days5blogposts" /><summary type="html">Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?</summary></entry><entry><title type="html">ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue</title><link href="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/" rel="alternate" type="text/html" title="ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue" /><published>2021-04-14T06:30:00+00:00</published><updated>2021-04-14T06:30:00+00:00</updated><id>https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/">&lt;p&gt;Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.&lt;/p&gt;
 
 &lt;h2 id=&quot;dynamic-properties-in-a-statically-typed-world&quot;&gt;Dynamic properties in a statically typed world&lt;/h2&gt;
 
