@@ -1,5 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-19T19:29:41+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
-</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">How to merge JSON documents in .NET Core and .NET 5?</title><link href="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/" rel="alternate" type="text/html" title="How to merge JSON documents in .NET Core and .NET 5?" /><published>2021-04-19T15:30:00+00:00</published><updated>2021-04-19T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/how-to-merge-json-net-csharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/">&lt;p&gt;Let’s say we have two JSON documents that we would like to merge. How can this be achieved?&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-04-20T20:14:50+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
+</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">Do we have to await every single C# async method?</title><link href="https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/" rel="alternate" type="text/html" title="Do we have to await every single C# async method?" /><published>2021-04-20T15:30:00+00:00</published><updated>2021-04-20T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/">&lt;p&gt;Did you ever see code like that? The method calls another asynchronous method and returns its direct result.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpPost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetUserQueryResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FromBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GetUserQuery&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_mediatr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Okay, it works perfectly well, so what’s the matter? Now take a look at the code below:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpPost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetUserQueryResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FromBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GetUserQuery&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_mediatr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I got rid of the keywords &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;async&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;. This makes the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Get&lt;/code&gt; method synchronous. It just passes the task on and does not wait for the result.&lt;/p&gt;
+
+&lt;p&gt;Both pieces of code work the same, but are they equally efficient? Let’s check it out!&lt;/p&gt;
+
+&lt;h2 id=&quot;so-whats-the-difference&quot;&gt;So what’s the difference?&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; keyword is syntactic sugar. In fact, when compiled, it is turned into a state machine that manages the asynchronous code. Additional code increases execution time and consumes additional resources.&lt;/p&gt;
+
+&lt;p&gt;Let me show you an example class:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestClass&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MethodA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;FromResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MethodB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;FromResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And its benchmark:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Benchmark&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TestClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testObject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;TestClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Benchmark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;NoRedundantOperators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MethodA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Benchmark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Baseline&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RedundantOperators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MethodB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here are the results of the benchmark:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Method&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Mean&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Error&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;StdDev&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Ratio&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;NoRedundantOperators&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;34.90 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0.738 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.035 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0.58&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RedundantOperators&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;60.17 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.243 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.144 ns&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;As you can see, the code without unnecessary operators is almost twice as fast!&lt;/p&gt;
+
+&lt;p&gt;I have put all the benchmark code in my GitHub repository so you can test it yourself. You can find the repository &lt;a href=&quot;https://github.com/mikasjp/AsyncAwaitBenchmark&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;finally&quot;&gt;Finally&lt;/h2&gt;
+
+&lt;p&gt;I hope I convince you that it is not always worth it to await every single async method call. Jak zawsze, jeżeli masz jakiekolwiek ciekawe przemyślenia w tym temacie, daj mi znać!&lt;/p&gt;</content><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><category term="csharp" /><category term="async" /><summary type="html">Do we have to await each C# async method? Does this have any effect on code performance? Let&apos;s check it out!</summary></entry><entry><title type="html">How to merge JSON documents in .NET Core and .NET 5?</title><link href="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/" rel="alternate" type="text/html" title="How to merge JSON documents in .NET Core and .NET 5?" /><published>2021-04-19T15:30:00+00:00</published><updated>2021-04-19T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/how-to-merge-json-net-csharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/">&lt;p&gt;Let’s say we have two JSON documents that we would like to merge. How can this be achieved?&lt;/p&gt;
 
 &lt;h2 id=&quot;using-newtonsoftjson&quot;&gt;Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Newtonsoft.Json&lt;/code&gt;&lt;/h2&gt;
 

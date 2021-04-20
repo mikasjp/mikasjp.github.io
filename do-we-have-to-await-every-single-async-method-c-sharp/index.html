@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Do we have to await every single C# async method? | Mikołaj Kamiński</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Do we have to await every single C# async method?" />
+<meta name="author" content="Mikołaj Kamiński" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Do we have to await each C# async method? Does this have any effect on code performance? Let’s check it out!" />
+<meta property="og:description" content="Do we have to await each C# async method? Does this have any effect on code performance? Let’s check it out!" />
+<link rel="canonical" href="https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/" />
+<meta property="og:url" content="https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/" />
+<meta property="og:site_name" content="Mikołaj Kamiński" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-20T15:30:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Do we have to await every single C# async method?" />
+<script type="application/ld+json">
+{"headline":"Do we have to await every single C# async method?","dateModified":"2021-04-20T15:30:00+00:00","datePublished":"2021-04-20T15:30:00+00:00","description":"Do we have to await each C# async method? Does this have any effect on code performance? Let’s check it out!","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/"},"url":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
+<script>
+  window['ga-disable-G-JW1354ZTBQ'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JW1354ZTBQ');
+</script>
+<!-- Material Icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+
+<!-- Progress Bar -->
+<script>
+  window.addEventListener('load', function () {
+    var progress_bar = document.createElement('div');
+    progress_bar.setAttribute('class', 'progress');
+    document.body.prepend(progress_bar);
+
+    var h = document.documentElement,
+      b = document.body,
+      st = 'scrollTop',
+      sh = 'scrollHeight',
+      scroll;
+
+    var update_scroll = function () {
+      scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+      progress_bar.style.setProperty('--scroll', scroll + '%');
+    }
+
+    document.addEventListener('scroll', update_scroll);
+    document.addEventListener('resize', update_scroll);
+  });
+</script>
+<!--  -->
+<script>
+  window.addEventListener('load', function () {
+    document
+    .querySelectorAll('article p a')
+    .forEach(function(link) {
+      link.setAttribute('target', '_blank');
+    });
+  });
+</script>
+
+
+<!-- Favicon -->
+<link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAWFhYADo6OgB0dHQAqZ+WAFZWVgBHR0cAODg4AMG6tQApKSkAubKrAFRUVABFRUUANjY2AD6wQgCmm5IAF63iAFJSUgBDQ0MANDQ0AO3p5gC9trEAJSUlALqyrAC2rqcAqKioAEFBQQChlYsAMjIyAF1dXQBOTk4AtaylAD8/PwAwMDAAISEhANHR0QBbW1sAycO/AD09PQAuLi4A3t7eAM/PzwD19PIAWVlZAOHb1gA7OzsAnI+FACwsLACupJwAV1dXALLltABISEgAOTk5ACoqKgBVVVUAra2tAEZGRgC4u/EANzc3ACgoKACroJgAU1NTAEpP0wBEREQA7ernADU1NQAmJiYAvreyAMjEvwBCQkIAMzMzAMXAugAkJCQAQEBAADExMQCyqaEAIiIiAFxcXAA+Pj4ALy8vALCnnwAgICAAWlpaAOHc1wBLS0sAyMK+ADw8PADDvrkALS0tAJTk9gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAET0LNgUxMQErUiRNTR0ABB4mJk4gGkUSPww4ODNSADBUBzQCViYgIBpFRT8MMQBLBkYTDTo0Ai1WTiBJGjYAGEVPIUpGEw0NBwItJiYRABcmCSM3J09KHBMNOgcCHgBDNBZCKAM1L1hPShwTQVQACBNRKRlIFkI7NS9YT0o4AFcTUSJMSBZCOzUvWE9KOABHShxGE0ENOjQtViYgGhIAJTlZMhQUFBQUFBQUFBQqAAA+EA4sLCwsLCwsLCxTQAAAAERVRwgVCh9QPA8bLgAAAAAAAAAAAAAAAAAAAAAAAP//AAD//wAAgAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAACAAQAAwAMAAP//AAA=" rel="icon" type="image/x-icon" />
+
+
+<!-- Plausible -->
+<script async defer data-domain="mikolaj-kaminski.com" src="https://plausible.io/js/plausible.js"></script>
+
+
+</head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Mikołaj Kamiński</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/">Home</a><a class="page-link" href="/about/">About me</a><a class="page-link" href="/contact/">Contact</a></div>
+        </nav></div>
+  </header>
+  <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header class="post-header">
+        <h1 class="post-title p-name" itemprop="name headline">Do we have to await every single C# async method?</h1>
+        <p class="post-meta"><time class="dt-published" datetime="2021-04-20T15:30:00+00:00" itemprop="datePublished">
+                Apr 20, 2021
+            </time></p>
+    </header>
+
+    <div class="post-content e-content" itemprop="articleBody">
+        <p>Did you ever see code like that? The method calls another asynchronous method and returns its direct result.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">HttpPost</span><span class="p">]</span>
+<span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">GetUserQueryResult</span><span class="p">&gt;</span> <span class="nf">Get</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span> <span class="n">GetUserQuery</span> <span class="n">query</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_mediatr</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Okay, it works perfectly well, so what’s the matter? Now take a look at the code below:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">HttpPost</span><span class="p">]</span>
+<span class="k">public</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">GetUserQueryResult</span><span class="p">&gt;</span> <span class="nf">Get</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span> <span class="n">GetUserQuery</span> <span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">_mediatr</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I got rid of the keywords <code class="language-plaintext highlighter-rouge">async</code> and <code class="language-plaintext highlighter-rouge">await</code>. This makes the <code class="language-plaintext highlighter-rouge">Get</code> method synchronous. It just passes the task on and does not wait for the result.</p>
+
+<p>Both pieces of code work the same, but are they equally efficient? Let’s check it out!</p>
+
+<h2 id="so-whats-the-difference">So what’s the difference?</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">await</code> keyword is syntactic sugar. In fact, when compiled, it is turned into a state machine that manages the asynchronous code. Additional code increases execution time and consumes additional resources.</p>
+
+<p>Let me show you an example class:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">TestClass</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">Task</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="nf">MethodA</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="nf">FromResult</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="nf">MethodB</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">FromResult</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And its benchmark:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Benchmark</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">TestClass</span> <span class="n">testObject</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">TestClass</span><span class="p">();</span>
+
+    <span class="p">[</span><span class="n">Benchmark</span><span class="p">]</span>
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">NoRedundantOperators</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="n">testObject</span><span class="p">.</span><span class="nf">MethodA</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="p">[</span><span class="nf">Benchmark</span><span class="p">(</span><span class="n">Baseline</span> <span class="p">=</span> <span class="k">true</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">RedundantOperators</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="n">testObject</span><span class="p">.</span><span class="nf">MethodB</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here are the results of the benchmark:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Mean</th>
+      <th style="text-align: right">Error</th>
+      <th style="text-align: right">StdDev</th>
+      <th style="text-align: right">Ratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NoRedundantOperators</td>
+      <td style="text-align: right">34.90 ns</td>
+      <td style="text-align: right">0.738 ns</td>
+      <td style="text-align: right">1.035 ns</td>
+      <td style="text-align: right">0.58</td>
+    </tr>
+    <tr>
+      <td>RedundantOperators</td>
+      <td style="text-align: right">60.17 ns</td>
+      <td style="text-align: right">1.243 ns</td>
+      <td style="text-align: right">2.144 ns</td>
+      <td style="text-align: right">1.00</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As you can see, the code without unnecessary operators is almost twice as fast!</p>
+
+<p>I have put all the benchmark code in my GitHub repository so you can test it yourself. You can find the repository <a href="https://github.com/mikasjp/AsyncAwaitBenchmark">here</a>.</p>
+
+<h2 id="finally">Finally</h2>
+
+<p>I hope I convince you that it is not always worth it to await every single async method call. Jak zawsze, jeżeli masz jakiekolwiek ciekawe przemyślenia w tym temacie, daj mi znać!</p>
+
+    </div>
+
+    <div><!-- Subscribe Form --></div><a class="u-url" href="/do-we-have-to-await-every-single-async-method-c-sharp/" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer">
+    <div class="tile wrapper">
+        <div class="tile">
+            <!-- FIRST FOOTER COLUMN -->
+        </div>
+        <div class="tile">
+            <!-- SECOND FOOTER COLUMN -->
+        </div>
+        <div class="tile has-text-right has-text-centered-mobile">
+            <span style="display:block;margin-left:auto">
+                &copy; 2021 Mikołaj Kamiński
+                
+        </span>
+        </div>
+    </div>
+    <div class="tile wrapper">
+        <ul class="social-media-list">
+  <li><a rel="me" href="/feed.xml" title="RSS Feed"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg></a></li><li><a rel="me" href="https://github.com/mikasjp" title="mikasjp"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.instagram.com/mikolaj_kaminski_pl" title="mikolaj_kaminski_pl"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mikolaj-kaminski" title="mikolaj-kaminski"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/m_kaminski_" title="m_kaminski_"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>    
+    </div>
+</footer></body>
+
+</html>
