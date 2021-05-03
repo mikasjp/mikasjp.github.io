@@ -336,7 +336,7 @@ a.page-link:hover { color: #2a7ae2; }
 a.page-link:before { content: "» "; }
 
 /* Progress Bar */
-.progress { background: linear-gradient(to right, #2A7AE2 var(--scroll), transparent 0); background-repeat: no-repeat; position: fixed; width: 100%; height: 4px; z-index: 1; }
+.article-progress { background: linear-gradient(to right, #2A7AE2 var(--scroll), transparent 0); background-repeat: no-repeat; position: fixed; width: 100%; height: 4px; z-index: 1; }
 
 /* SVG Icon fix */
 .svg-icon { padding: initial; }
