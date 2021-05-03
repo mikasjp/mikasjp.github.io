@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import "https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css";
 .highlight .c { color: #998; font-style: italic; }
 
 .highlight .err { color: #a61717; background-color: #e3d2d2; }
@@ -328,8 +327,6 @@ table td { border: 1px solid #e8e8e8; }
 
 .site-title:after { content: " _"; animation: blink-caret 1s step-end infinite; }
 
-.site-title:before { font-family: 'Material Icons'; content: "emoji_people "; line-height: 54px; vertical-align: bottom; color: #2a7ae2; }
-
 .site-nav { text-align: left; }
 
 a.page-link, .site-title:hover { text-decoration: none; }
@@ -357,5 +354,10 @@ pre.highlight { margin: 1em; border: none; }
 
 /* Table fix */
 article table { display: block; overflow-x: auto; }
+
+/* Bulma preload fix */
+html { box-sizing: border-box; }
+
+* { box-sizing: inherit; }
 
 /*# sourceMappingURL=style.css.map */
