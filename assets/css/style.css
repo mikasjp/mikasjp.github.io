@@ -360,4 +360,6 @@ html { box-sizing: border-box; }
 
 * { box-sizing: inherit; }
 
+.page-content p { margin-bottom: 1rem; }
+
 /*# sourceMappingURL=style.css.map */
