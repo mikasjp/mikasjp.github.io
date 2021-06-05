@@ -136,7 +136,7 @@
                 <span class="p">.</span><span class="nf">WithTransientLifetime</span><span class="p">()</span> <span class="c1">// Scope definition</span>
             <span class="p">.</span><span class="nf">AddClasses</span><span class="p">(</span><span class="n">classes</span> <span class="p">=&gt;</span> <span class="n">classes</span><span class="p">.</span><span class="nf">AssignableTo</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IQueryHandler</span><span class="p">&lt;,&gt;)))</span>
                 <span class="p">.</span><span class="nf">AsImplementedInterfaces</span><span class="p">()</span>
-                <span class="p">.</span><span class="nf">WithTransientLifetime</span><span class="p">();</span>
+                <span class="p">.</span><span class="nf">WithTransientLifetime</span><span class="p">());</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
