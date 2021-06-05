@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="An elegant way to validate MediatR commands and queries" />
 <script type="application/ld+json">
-{"datePublished":"2021-04-22T11:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/"},"description":"Today I would like to show you a really cool way to validate MediatR commands and queries using FluentValidation.","dateModified":"2021-04-22T11:00:00+00:00","url":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"headline":"An elegant way to validate MediatR commands and queries","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","author":{"@type":"Person","name":"Mikołaj Kamiński"},"description":"Today I would like to show you a really cool way to validate MediatR commands and queries using FluentValidation.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/"},"headline":"An elegant way to validate MediatR commands and queries","url":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/","dateModified":"2021-04-22T11:00:00+00:00","datePublished":"2021-04-22T11:00:00+00:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -218,7 +218,7 @@
 
 <p>Finally, register it in a DI container. That’s it! Now, every time you run a command or query, it will be validated by the appropriate validator.</p>
 
-<p>Nothing prevents you from implementing more validators for one command/query, but it will require modification of our <code class="language-plaintext highlighter-rouge">LoggingBehavior</code>. I’ll leave it for you as homework.</p>
+<p>Nothing prevents you from implementing more validators for one command/query, but it will require modification of our <code class="language-plaintext highlighter-rouge">ValidationBehavior</code>. I’ll leave it for you as homework.</p>
 
 <h2 id="summary">Summary</h2>
 
