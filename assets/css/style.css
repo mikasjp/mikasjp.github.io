@@ -344,7 +344,9 @@ a.page-link:before { content: "» "; }
 .social-media-list a, .pagination a { line-height: 0px; }
 
 /* List style fix (Bulma) */
-ul { list-style: initial; }
+article ul, ol { list-style: initial !important; margin-left: 30px !important; }
+
+ul.social-media-list, ul.pagination { list-style: none !important; margin: auto !important; }
 
 .is-centered { margin: auto; }
 
@@ -361,5 +363,8 @@ html { box-sizing: border-box; }
 * { box-sizing: inherit; }
 
 .page-content p { margin-bottom: 1rem; }
+
+/* Figure fix (Bulma) */
+figure { margin-bottom: 15px !important; }
 
 /*# sourceMappingURL=style.css.map */

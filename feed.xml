@@ -1,5 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-06-05T14:57:05+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
-</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">My favorite way to handle configuration in .NET Core</title><link href="https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp/" rel="alternate" type="text/html" title="My favorite way to handle configuration in .NET Core" /><published>2021-04-23T15:30:00+00:00</published><updated>2021-04-23T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp/">&lt;p&gt;I am writing this blog post because I often see a configuration support proposal that uses hardcoded strings. Here’s a way to avoid it.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mikolaj-kaminski.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mikolaj-kaminski.com/" rel="alternate" type="text/html" /><updated>2021-10-18T08:28:43+00:00</updated><id>https://mikolaj-kaminski.com/feed.xml</id><title type="html">Mikołaj Kamiński</title><subtitle>My personal page and blog about software development
+</subtitle><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><entry><title type="html">I couldn’t debug the code because of my name</title><link href="https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/" rel="alternate" type="text/html" title="I couldn’t debug the code because of my name" /><published>2021-10-18T07:00:00+00:00</published><updated>2021-10-18T07:00:00+00:00</updated><id>https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix</id><content type="html" xml:base="https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/">&lt;p&gt;Some time ago, I finally managed to switch from Visual Studio to JetBrains Rider at work. Finally, because I used to work a lot with Rider before, and I really like this IDE. Unfortunately, I ran into some annoying problems with docker-compose debug configuration.&lt;/p&gt;
+
+&lt;p&gt;It turns out that the same problem also affects users of other InteliJ-based IDEs like RubyMine, PyCharm, PhpStorm and GoLand. Fortunately, I was able to fix it.&lt;/p&gt;
+
+&lt;h2 id=&quot;debugging-docker-compose-service-and-unicodedecodeerror&quot;&gt;Debugging docker-compose service and UnicodeDecodeError&lt;/h2&gt;
+
+&lt;p&gt;Rider solves the topic of Run/Debug configuration differently from Visual Studio, so I had to add my configuration myself. &lt;a href=&quot;https://blog.jetbrains.com/dotnet/2020/01/13/docker-compose-edit-continue-c-8-debugger-updates-rider-2019-3/&quot;&gt;It is not that hard&lt;/a&gt;. All you need to do is select the docker-compose file, select the service to which the debugger is to attach, and that’s it.&lt;/p&gt;
+
+&lt;p&gt;What was my surprise when after clicking the Debug button I saw the following error:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Deploying &apos;Compose: local&apos;...
+docker-compose -f C:\Repositories\TestProject\docker-compose.yml -f C:\Users\Mikołaj\AppData\Local\JetBrains\Rider2021.2\tmp\docker-compose.override.yml up --no-deps --build my_service
+ERROR: .UnicodeDecodeError: &apos;utf-8&apos; codec can&apos;t decode byte 0xb3 in position 536: invalid start byte
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Have I made any mistake? I tried clicking the Run button. The application started without any problem. WTF?!&lt;/p&gt;
+
+&lt;h2 id=&quot;mikołaj-is-a-name-of-doom&quot;&gt;Mikołaj is a name of doom&lt;/h2&gt;
+
+&lt;p&gt;I decided to check the difference between the Rider launch process in Debug and Release mode. It turned out that in the case of the Debug  mode, it generates a docker-compose file with which it overwrites the original file. I was convinced that my original docker-compose was correct. Was the error related to the generated file? Let’s see what it looks like.
+My temporary file was stored in the following location: 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%LocalAppData%\JetBrains\Rider2021.2\tmp\docker-compose.override.yml&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.4&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;my_service&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;entrypoint&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/riderDebugger/runtime-dotnet.sh&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/riderDebugger/JetBrains.Debugger.Worker.exe&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--mode=server&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--frontend-port=57001&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--backend-port=57101&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;RIDER_DEBUGGER_LOG_DIR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/riderLogs&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;RESHARPER_LOG_CONF&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/riderLogsConf/backend-log.xml&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;57001:57001&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;57101:57101&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Program&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Files&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;(x86)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Rider&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2021.1.1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ReSharperHost:/riderDebugger&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Miko�aj&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;AppData&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Local&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Rider2021.2&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;DebuggerWorker&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\\
+&lt;/span&gt;      &lt;span class=&quot;s&quot;&gt;JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Program&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Files&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;(x86)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Rider&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2021.1.1/bin:/riderLogsConf&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Take a look at the volumes section. One of the entries contains some strange character.&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Miko�aj&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;AppData&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Local&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;JetBrains&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Rider2021.2&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;DebuggerWorker&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\\
+&lt;/span&gt;      &lt;span class=&quot;s&quot;&gt;JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;My username contains a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;ł&quot;&lt;/code&gt; character and because of it, this file cannot be processed properly.&lt;/p&gt;
+
+&lt;p&gt;But what can I do about it? After all, this file is generated automatically by Rider.&lt;/p&gt;
+
+&lt;h2 id=&quot;lets-face-the-problem&quot;&gt;Let’s face the problem&lt;/h2&gt;
+
+&lt;p&gt;When I found out that the bug was in the Rider itself, I &lt;a href=&quot;https://youtrack.jetbrains.com/issue/IDEA-264563&quot;&gt;reported it&lt;/a&gt; to technical support. I also found &lt;a href=&quot;https://youtrack.jetbrains.com/issue/PY-42620&quot;&gt;a similar report&lt;/a&gt; for PyCharm. Unfortunately, things haven’t moved forward since then. I decided to try to solve this problem myself. Fortunately, I was able to do this and can share my solution to this very annoying problem with others.&lt;/p&gt;
+
+&lt;p&gt;The first idea was to change the username to one that does not contain Polish characters. It turned out that Windows does not rename the user’s folder when changing the username. Manually renaming the folder was not an option. This way I could corrupt my profile in the system.&lt;/p&gt;
+
+&lt;p&gt;What if I changed the path where Rider stores temporary files? I started browsing the documentation from JetBrains and found &lt;a href=&quot;https://www.jetbrains.com/help/idea/2021.2/directories-used-by-the-ide-to-store-settings-caches-plugins-and-logs.html#change-ide-dirs&quot;&gt;an interesting article&lt;/a&gt; on advanced configuration of InteliJ-based IDEs. This article explains how you can change the paths that the IDE uses.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Start your IDE, and go to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Help&lt;/code&gt; section in the main menu. There you will find the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Edit Custom Properties&lt;/code&gt; option. Click on it. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%APPDATA%\JetBrains\{your_IDE_version}\idea.properties&lt;/code&gt; file will open for editing.&lt;/p&gt;
+
+&lt;p&gt;Add the following line to it:&lt;/p&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;py&quot;&gt;idea.system.path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;${root.dir}/JetBrains/Rider/system&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the file and restart the IDE. From now on, Rider will keep temporary files in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;C:\JetBrains\Rider\system&lt;/code&gt; directory. Of course you may have a different drive under the variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${root.dir}&lt;/code&gt;, but the idea is the same.&lt;/p&gt;
+
+&lt;p&gt;Finally, you have to clean up after yourself. Go to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Help&lt;/code&gt; section of the main menu and click &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Delete Leftover IDE Directories...&lt;/code&gt;. Rider will scan for unnecessary folders and offer to delete them.&lt;/p&gt;
+
+&lt;p&gt;That’s all! Finally, you can start debugging your services launched from docker-compose!&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;From the moment the bug was reported to JetBrains support, 7 months passed until the publication of this post. I don’t know if they will ever fix this bug, but all I know is that it prevented me from working in my favorite IDE.&lt;/p&gt;
+
+&lt;p&gt;I hope you found this article helpful. If you have any questions about this, feel free to contact me.&lt;/p&gt;</content><author><name>Mikołaj Kamiński</name><email>your-email@domain.com</email></author><category term="dotnet" /><category term="jetbrains" /><category term="rider" /><summary type="html">Some time ago, I finally managed to switch from Visual Studio to JetBrains Rider at work. Finally, because I used to work a lot with Rider before, and I really like this IDE. Unfortunately, I ran into some annoying problems with docker-compose debug configuration.</summary></entry><entry><title type="html">My favorite way to handle configuration in .NET Core</title><link href="https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp/" rel="alternate" type="text/html" title="My favorite way to handle configuration in .NET Core" /><published>2021-04-23T15:30:00+00:00</published><updated>2021-04-23T15:30:00+00:00</updated><id>https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp</id><content type="html" xml:base="https://mikolaj-kaminski.com/my-favorite-way-to-handle-configuration-dotnet-csharp/">&lt;p&gt;I am writing this blog post because I often see a configuration support proposal that uses hardcoded strings. Here’s a way to avoid it.&lt;/p&gt;
 
 &lt;h2 id=&quot;my-way&quot;&gt;My way&lt;/h2&gt;
 
@@ -30,7 +112,7 @@
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ExampleClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ExampleCommandHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;_configuration&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
