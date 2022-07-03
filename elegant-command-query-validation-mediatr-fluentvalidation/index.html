@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="An elegant way to validate MediatR commands and queries" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/"},"description":"Today I would like to show you a really cool way to validate MediatR commands and queries using FluentValidation.","headline":"An elegant way to validate MediatR commands and queries","dateModified":"2021-04-22T11:00:00+00:00","datePublished":"2021-04-22T11:00:00+00:00","url":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"An elegant way to validate MediatR commands and queries","dateModified":"2021-04-22T11:00:00+00:00","datePublished":"2021-04-22T11:00:00+00:00","url":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/elegant-command-query-validation-mediatr-fluentvalidation/"},"@type":"BlogPosting","description":"Today I would like to show you a really cool way to validate MediatR commands and queries using FluentValidation.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -110,21 +110,21 @@
 
 <p>Here is an example handler code, which validates a command input.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">CreateUserCommandHandler</span> <span class="p">:</span> <span class="n">IRequestHandler</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;</span> <span class="nf">Handle</span><span class="p">(</span>
-        <span class="n">CreateUserCommand</span> <span class="n">request</span><span class="p">,</span>
-        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Some command validation logic e.g.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="nf">IsNullOrEmpty</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">Username</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span><span class="p">(</span><span class="s">$"Username cannot be empty"</span><span class="p">);</span>
-        <span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">CreateUserCommandHandler</span> <span style="color: #93a1a1">:</span> <span style="color: #586e75">IRequestHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">Unit</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Handle</span><span style="color: #93a1a1">(</span>
+        <span style="color: #586e75">CreateUserCommand</span> <span style="color: #586e75">request</span><span style="color: #93a1a1">,</span>
+        <span style="color: #586e75">CancellationToken</span> <span style="color: #586e75">cancellationToken</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #657b83">// Some command validation logic e.g.</span>
+        <span style="color: #6c71c4">if</span> <span style="color: #93a1a1">(</span><span style="color: #cb4b16">string</span><span style="color: #93a1a1">.</span><span style="color: #586e75">IsNullOrEmpty</span><span style="color: #93a1a1">(</span><span style="color: #586e75">request</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Username</span><span style="color: #93a1a1">))</span>
+        <span style="color: #93a1a1">{</span>
+            <span style="color: #6c71c4">throw</span> <span style="color: #6c71c4">new</span> <span style="color: #586e75">ArgumentException</span><span style="color: #93a1a1">(</span><span style="color: #859900">$"Username cannot be empty"</span><span style="color: #93a1a1">);</span>
+        <span style="color: #93a1a1">}</span>
 
-        <span class="c1">// User creation logic</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        <span style="color: #657b83">// User creation logic</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>There is nothing bad in that, but… What if we separate validation and command logic? Wouldn’t it be more maintainable?</p>
@@ -135,46 +135,46 @@
 
 <p>Let’s implement our <code class="language-plaintext highlighter-rouge">CreateUserCommand</code> validator.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">CreateUserCommandValidator</span> <span class="p">:</span> <span class="n">AbstractValidator</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span> <span class="p">{</span>
-  <span class="k">public</span> <span class="nf">CustomerValidator</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nf">RuleFor</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Username</span><span class="p">)</span>
-        <span class="p">.</span><span class="nf">NotEmpty</span><span class="p">()</span>
-        <span class="p">.</span><span class="nf">WithMessage</span><span class="p">(</span><span class="s">"Username cannot be empty"</span><span class="p">);</span>
-    <span class="nf">RuleFor</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
-        <span class="p">.</span><span class="nf">NotEmpty</span><span class="p">()</span>
-        <span class="p">.</span><span class="nf">WithMessage</span><span class="p">(</span><span class="s">"Email address cannot be empty"</span><span class="p">);</span>
-    <span class="nf">RuleFor</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
-        <span class="p">.</span><span class="nf">EmailAddress</span><span class="p">()</span>
-        <span class="p">.</span><span class="nf">WithMessage</span><span class="p">(</span><span class="s">"Please specify a valid email address"</span><span class="p">);</span>
-    <span class="c1">// ...</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">CreateUserCommandValidator</span> <span style="color: #93a1a1">:</span> <span style="color: #586e75">AbstractValidator</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span> <span style="color: #93a1a1">{</span>
+  <span style="color: #6c71c4">public</span> <span style="color: #586e75">CustomerValidator</span><span style="color: #93a1a1">()</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #586e75">RuleFor</span><span style="color: #93a1a1">(</span><span style="color: #586e75">x</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Username</span><span style="color: #93a1a1">)</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">NotEmpty</span><span style="color: #93a1a1">()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">WithMessage</span><span style="color: #93a1a1">(</span><span style="color: #859900">"Username cannot be empty"</span><span style="color: #93a1a1">);</span>
+    <span style="color: #586e75">RuleFor</span><span style="color: #93a1a1">(</span><span style="color: #586e75">x</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Email</span><span style="color: #93a1a1">)</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">NotEmpty</span><span style="color: #93a1a1">()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">WithMessage</span><span style="color: #93a1a1">(</span><span style="color: #859900">"Email address cannot be empty"</span><span style="color: #93a1a1">);</span>
+    <span style="color: #586e75">RuleFor</span><span style="color: #93a1a1">(</span><span style="color: #586e75">x</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Email</span><span style="color: #93a1a1">)</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">EmailAddress</span><span style="color: #93a1a1">()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">WithMessage</span><span style="color: #93a1a1">(</span><span style="color: #859900">"Please specify a valid email address"</span><span style="color: #93a1a1">);</span>
+    <span style="color: #657b83">// ...</span>
+  <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Of course, we have to register all our validators in the DI container. We can do it manually, but I recommend doing it using extensions from <a href="https://docs.fluentvalidation.net/en/latest/aspnet.html">the extra NuGet package</a>. Alternatively you can do it using <a href="/easy-di-container-services-registration-scrutor/">Scrutor</a>.</p>
 
 <p>Then we have to modify our <code class="language-plaintext highlighter-rouge">CreateUserCommandHandler</code> to use our brand new <code class="language-plaintext highlighter-rouge">CreateUserCommandValidator</code>:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">CreateUserCommandHandler</span> <span class="p">:</span> <span class="n">IRequestHandler</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span>
-<span class="p">{</span>
-    <span class="k">private</span> <span class="k">readonly</span> <span class="n">IValidator</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span> <span class="n">validator</span><span class="p">;</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">CreateUserCommandHandler</span> <span style="color: #93a1a1">:</span> <span style="color: #586e75">IRequestHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">private</span> <span style="color: #6c71c4">readonly</span> <span style="color: #586e75">IValidator</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">validator</span><span style="color: #93a1a1">;</span>
 
-    <span class="k">public</span> <span class="nf">CreateUserCommandHandler</span><span class="p">(</span>
-        <span class="n">IValidator</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span> <span class="n">validator</span><span class="p">)</span> <span class="c1">// AbstractValidator implements IValidator interface</span>
-    <span class="p">{</span>
-        <span class="n">_validator</span> <span class="p">=</span> <span class="n">validator</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #586e75">CreateUserCommandHandler</span><span style="color: #93a1a1">(</span>
+        <span style="color: #586e75">IValidator</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">validator</span><span style="color: #93a1a1">)</span> <span style="color: #657b83">// AbstractValidator implements IValidator interface</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #586e75">_validator</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">validator</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
 
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;</span> <span class="nf">Handle</span><span class="p">(</span>
-        <span class="n">CreateUserCommand</span> <span class="n">request</span><span class="p">,</span>
-        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Our whole validation code becomes:</span>
-        <span class="n">validator</span><span class="p">.</span><span class="nf">ValidateAndThrow</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">Unit</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Handle</span><span style="color: #93a1a1">(</span>
+        <span style="color: #586e75">CreateUserCommand</span> <span style="color: #586e75">request</span><span style="color: #93a1a1">,</span>
+        <span style="color: #586e75">CancellationToken</span> <span style="color: #586e75">cancellationToken</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #657b83">// Our whole validation code becomes:</span>
+        <span style="color: #586e75">validator</span><span style="color: #93a1a1">.</span><span style="color: #586e75">ValidateAndThrow</span><span style="color: #93a1a1">(</span><span style="color: #586e75">request</span><span style="color: #93a1a1">);</span>
 
-        <span class="c1">// User creation logic</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        <span style="color: #657b83">// User creation logic</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Nice, but can we do it better? Well, of course we can.</p>
@@ -183,37 +183,37 @@
 
 <p>The last improvement will be to completely remove the explicit validation from the handler. Now it should look like this:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">CreateUserCommandHandler</span> <span class="p">:</span> <span class="n">IRequestHandler</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;</span> <span class="nf">Handle</span><span class="p">(</span><span class="n">CreateUserCommand</span> <span class="n">request</span><span class="p">,</span> <span class="n">CancellationToken</span> <span class="n">cancellationToken</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// User creation logic</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">CreateUserCommandHandler</span> <span style="color: #93a1a1">:</span> <span style="color: #586e75">IRequestHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">Unit</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Handle</span><span style="color: #93a1a1">(</span><span style="color: #586e75">CreateUserCommand</span> <span style="color: #586e75">request</span><span style="color: #93a1a1">,</span> <span style="color: #586e75">CancellationToken</span> <span style="color: #586e75">cancellationToken</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #657b83">// User creation logic</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Now I have to tell you something important about MediatR. It allows you to implement something like middlewares. It’s called <a href="https://github.com/jbogard/MediatR/wiki/Behaviors">pipeline behavior</a>.</p>
 
 <p>Behaviors allow you to build your own pipeline that will be executed before the handler. Let’s implement our <code class="language-plaintext highlighter-rouge">ValidationBehavior</code>.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ValidationBehavior</span><span class="p">&lt;</span><span class="n">TRequest</span><span class="p">,</span> <span class="n">TResponse</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">IPipelineBehavior</span><span class="p">&lt;</span><span class="n">TRequest</span><span class="p">,</span> <span class="n">TResponse</span><span class="p">&gt;</span>
-<span class="p">{</span>
-    <span class="k">private</span> <span class="k">readonly</span> <span class="n">IValidator</span><span class="p">&lt;</span><span class="n">TRequest</span><span class="p">&gt;</span> <span class="n">_validator</span><span class="p">;</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">ValidationBehavior</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TRequest</span><span style="color: #93a1a1">,</span> <span style="color: #586e75">TResponse</span><span style="color: #93a1a1">&gt;</span> <span style="color: #93a1a1">:</span> <span style="color: #586e75">IPipelineBehavior</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TRequest</span><span style="color: #93a1a1">,</span> <span style="color: #586e75">TResponse</span><span style="color: #93a1a1">&gt;</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">private</span> <span style="color: #6c71c4">readonly</span> <span style="color: #586e75">IValidator</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TRequest</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">_validator</span><span style="color: #93a1a1">;</span>
 
-    <span class="k">public</span> <span class="nf">ValidationBehavior</span><span class="p">(</span><span class="n">IValidator</span><span class="p">&lt;</span><span class="n">TRequest</span><span class="p">&gt;</span> <span class="n">validator</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">_validator</span> <span class="p">=</span> <span class="n">validator</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #586e75">ValidationBehavior</span><span style="color: #93a1a1">(</span><span style="color: #586e75">IValidator</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TRequest</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">validator</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #586e75">_validator</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">validator</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
 
-    <span class="k">public</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">TResponse</span><span class="p">&gt;</span> <span class="nf">Handle</span><span class="p">(</span>
-        <span class="n">TRequest</span> <span class="n">request</span><span class="p">,</span>
-        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span><span class="p">,</span>
-        <span class="n">RequestHandlerDelegate</span><span class="p">&lt;</span><span class="n">TResponse</span><span class="p">&gt;</span> <span class="n">next</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">_validator</span><span class="p">.</span><span class="nf">ValidateAndThrow</span><span class="p">(</span><span class="n">request</span><span class="p">);</span> <span class="c1">// Check out the other methods for more advanced handling of validation errors </span>
-        <span class="k">return</span> <span class="nf">next</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TResponse</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Handle</span><span style="color: #93a1a1">(</span>
+        <span style="color: #586e75">TRequest</span> <span style="color: #586e75">request</span><span style="color: #93a1a1">,</span>
+        <span style="color: #586e75">CancellationToken</span> <span style="color: #586e75">cancellationToken</span><span style="color: #93a1a1">,</span>
+        <span style="color: #586e75">RequestHandlerDelegate</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">TResponse</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">next</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #586e75">_validator</span><span style="color: #93a1a1">.</span><span style="color: #586e75">ValidateAndThrow</span><span style="color: #93a1a1">(</span><span style="color: #586e75">request</span><span style="color: #93a1a1">);</span> <span style="color: #657b83">// Check out the other methods for more advanced handling of validation errors </span>
+        <span style="color: #6c71c4">return</span> <span style="color: #586e75">next</span><span style="color: #93a1a1">();</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Finally, register it in a DI container. That’s it! Now, every time you run a command or query, it will be validated by the appropriate validator.</p>
@@ -241,7 +241,7 @@
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

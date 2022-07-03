@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Do we have to await every single C# async method?" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/"},"description":"Do we have to await each C# async method? Does this have any effect on code performance? Let’s check it out!","headline":"Do we have to await every single C# async method?","dateModified":"2021-04-20T15:30:00+00:00","datePublished":"2021-04-20T15:30:00+00:00","url":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Do we have to await every single C# async method?","dateModified":"2021-04-20T15:30:00+00:00","datePublished":"2021-04-20T15:30:00+00:00","url":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/do-we-have-to-await-every-single-async-method-c-sharp/"},"@type":"BlogPosting","description":"Do we have to await each C# async method? Does this have any effect on code performance? Let’s check it out!","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -104,21 +104,21 @@
     <div class="post-content e-content" itemprop="articleBody">
         <p>Did you ever see code a like that? The method calls another asynchronous method and returns its direct result.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">HttpPost</span><span class="p">]</span>
-<span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">GetUserQueryResult</span><span class="p">&gt;</span> <span class="nf">Get</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span> <span class="n">GetUserQuery</span> <span class="n">query</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_mediatr</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">[</span><span style="color: #586e75">HttpPost</span><span style="color: #93a1a1">]</span>
+<span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">GetUserQueryResult</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Get</span><span style="color: #93a1a1">([</span><span style="color: #586e75">FromBody</span><span style="color: #93a1a1">]</span> <span style="color: #586e75">GetUserQuery</span> <span style="color: #586e75">query</span><span style="color: #93a1a1">)</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #cb4b16">var</span> <span style="color: #586e75">result</span> <span style="color: #93a1a1">=</span> <span style="color: #6c71c4">await</span> <span style="color: #586e75">_mediatr</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Send</span><span style="color: #93a1a1">(</span><span style="color: #586e75">query</span><span style="color: #93a1a1">);</span>
+    <span style="color: #6c71c4">return</span> <span style="color: #586e75">result</span><span style="color: #93a1a1">;</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Okay, it works perfectly well, so what’s the matter? Now take a look at the code below:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">HttpPost</span><span class="p">]</span>
-<span class="k">public</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">GetUserQueryResult</span><span class="p">&gt;</span> <span class="nf">Get</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span> <span class="n">GetUserQuery</span> <span class="n">id</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="n">_mediatr</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">[</span><span style="color: #586e75">HttpPost</span><span style="color: #93a1a1">]</span>
+<span style="color: #6c71c4">public</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">GetUserQueryResult</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">Get</span><span style="color: #93a1a1">([</span><span style="color: #586e75">FromBody</span><span style="color: #93a1a1">]</span> <span style="color: #586e75">GetUserQuery</span> <span style="color: #586e75">id</span><span style="color: #93a1a1">)</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">return</span> <span style="color: #586e75">_mediatr</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Send</span><span style="color: #93a1a1">(</span><span style="color: #586e75">query</span><span style="color: #93a1a1">);</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>I got rid of the <code class="language-plaintext highlighter-rouge">async</code> and <code class="language-plaintext highlighter-rouge">await</code> keywords. This makes the <code class="language-plaintext highlighter-rouge">Get</code> method synchronous. It just passes the task on and does not wait for the result.</p>
@@ -131,38 +131,38 @@
 
 <p>Let me show you an example class:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">TestClass</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="n">Task</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="nf">MethodA</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="nf">FromResult</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
-    <span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">TestClass</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #cb4b16">int</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">MethodA</span><span style="color: #93a1a1">()</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">return</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">.</span><span style="color: #586e75">FromResult</span><span style="color: #93a1a1">(</span><span style="color: #859900">1</span><span style="color: #93a1a1">);</span>
+    <span style="color: #93a1a1">}</span>
 
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="nf">MethodB</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">FromResult</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">&lt;</span><span style="color: #cb4b16">int</span><span style="color: #93a1a1">&gt;</span> <span style="color: #586e75">MethodB</span><span style="color: #93a1a1">()</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">return</span> <span style="color: #6c71c4">await</span> <span style="color: #586e75">Task</span><span style="color: #93a1a1">.</span><span style="color: #586e75">FromResult</span><span style="color: #93a1a1">(</span><span style="color: #859900">1</span><span style="color: #93a1a1">);</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>And its benchmark:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Benchmark</span>
-<span class="p">{</span>
-    <span class="k">private</span> <span class="n">TestClass</span> <span class="n">testObject</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">TestClass</span><span class="p">();</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">Benchmark</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">private</span> <span style="color: #586e75">TestClass</span> <span style="color: #586e75">testObject</span> <span style="color: #93a1a1">=</span> <span style="color: #6c71c4">new</span> <span style="color: #586e75">TestClass</span><span style="color: #93a1a1">();</span>
 
-    <span class="p">[</span><span class="n">Benchmark</span><span class="p">]</span>
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">NoRedundantOperators</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">await</span> <span class="n">testObject</span><span class="p">.</span><span class="nf">MethodA</span><span class="p">();</span>
-    <span class="p">}</span>
+    <span style="color: #93a1a1">[</span><span style="color: #586e75">Benchmark</span><span style="color: #93a1a1">]</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span> <span style="color: #586e75">NoRedundantOperators</span><span style="color: #93a1a1">()</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">await</span> <span style="color: #586e75">testObject</span><span style="color: #93a1a1">.</span><span style="color: #586e75">MethodA</span><span style="color: #93a1a1">();</span>
+    <span style="color: #93a1a1">}</span>
 
-    <span class="p">[</span><span class="nf">Benchmark</span><span class="p">(</span><span class="n">Baseline</span> <span class="p">=</span> <span class="k">true</span><span class="p">)]</span>
-    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">RedundantOperators</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">await</span> <span class="n">testObject</span><span class="p">.</span><span class="nf">MethodB</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    <span style="color: #93a1a1">[</span><span style="color: #586e75">Benchmark</span><span style="color: #93a1a1">(</span><span style="color: #586e75">Baseline</span> <span style="color: #93a1a1">=</span> <span style="color: #6c71c4">true</span><span style="color: #93a1a1">)]</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">async</span> <span style="color: #586e75">Task</span> <span style="color: #586e75">RedundantOperators</span><span style="color: #93a1a1">()</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">await</span> <span style="color: #586e75">testObject</span><span style="color: #93a1a1">.</span><span style="color: #586e75">MethodB</span><span style="color: #93a1a1">();</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Here are the results of the benchmark:</p>
@@ -218,7 +218,7 @@
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

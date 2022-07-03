@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Why do I find Ruby sexy?" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/why-ruby-is-sexy/"},"description":"Loose thoughts on Ruby programming language by a .NET developer.","headline":"Why do I find Ruby sexy?","dateModified":"2021-04-10T11:00:00+00:00","datePublished":"2021-04-10T11:00:00+00:00","url":"https://mikolaj-kaminski.com/why-ruby-is-sexy/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Why do I find Ruby sexy?","dateModified":"2021-04-10T11:00:00+00:00","datePublished":"2021-04-10T11:00:00+00:00","url":"https://mikolaj-kaminski.com/why-ruby-is-sexy/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/why-ruby-is-sexy/"},"@type":"BlogPosting","description":"Loose thoughts on Ruby programming language by a .NET developer.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -112,13 +112,13 @@
 
 <p>Ruby has very clean and simple syntax which makes it human friendly. I like when code is easy to read and understand.</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">say_hello</span> <span class="nb">name</span>
-    <span class="s2">"Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!"</span>
-<span class="k">end</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">def</span> <span style="color: #586e75">say_hello</span> <span style="color: #586e75">name</span>
+    <span style="color: #859900">"Hello </span><span style="color: #d33682">#{</span><span style="color: #586e75">name</span><span style="color: #d33682">}</span><span style="color: #859900">!"</span>
+<span style="color: #6c71c4">end</span>
 
-<span class="p">[</span><span class="s2">"Mikołaj"</span><span class="p">,</span> <span class="s2">"Tom"</span><span class="p">,</span> <span class="s2">"Jerry"</span><span class="p">]</span>
-    <span class="p">.</span><span class="nf">map</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">say_hello</span> <span class="n">x</span><span class="p">}</span>
-    <span class="p">.</span><span class="nf">each</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span><span class="p">}</span>
+<span style="color: #93a1a1">[</span><span style="color: #859900">"Mikołaj"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Tom"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Jerry"</span><span style="color: #93a1a1">]</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">map</span> <span style="color: #93a1a1">{</span><span style="color: #93a1a1">|</span><span style="color: #586e75">x</span><span style="color: #93a1a1">|</span> <span style="color: #586e75">say_hello</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">}</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">each</span><span style="color: #93a1a1">{</span><span style="color: #93a1a1">|</span><span style="color: #586e75">x</span><span style="color: #93a1a1">|</span> <span style="color: #586e75">puts</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">}</span>
 
 </code></pre></div></div>
 
@@ -133,22 +133,22 @@ It’s great how many useful tools we get out of the box.</p>
 
 <p>Let me show you some date and time examples.</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Time</span><span class="p">.</span><span class="nf">now</span>                <span class="c1"># produces current date and time</span>
-<span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">.</span><span class="nf">utc</span>            <span class="c1"># produces current date and time converted to UTC</span>
-<span class="no">Time</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"2021-06-01"</span><span class="p">)</span>  <span class="c1"># produces new Time object which stores given date</span>
-<span class="no">Time</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">1617443220</span><span class="p">)</span>     <span class="c1"># same as above but using timestamp</span>
-<span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">.</span><span class="nf">monday?</span>        <span class="c1"># indicates if date is monday</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #b58900">Time</span><span style="color: #93a1a1">.</span><span style="color: #586e75">now</span>                <span style="color: #657b83"># produces current date and time</span>
+<span style="color: #b58900">Time</span><span style="color: #93a1a1">.</span><span style="color: #586e75">now</span><span style="color: #93a1a1">.</span><span style="color: #586e75">utc</span>            <span style="color: #657b83"># produces current date and time converted to UTC</span>
+<span style="color: #b58900">Time</span><span style="color: #93a1a1">.</span><span style="color: #586e75">new</span><span style="color: #93a1a1">(</span><span style="color: #859900">"2021-06-01"</span><span style="color: #93a1a1">)</span>  <span style="color: #657b83"># produces new Time object which stores given date</span>
+<span style="color: #b58900">Time</span><span style="color: #93a1a1">.</span><span style="color: #586e75">at</span><span style="color: #93a1a1">(</span><span style="color: #859900">1617443220</span><span style="color: #93a1a1">)</span>     <span style="color: #657b83"># same as above but using timestamp</span>
+<span style="color: #b58900">Time</span><span style="color: #93a1a1">.</span><span style="color: #586e75">now</span><span style="color: #93a1a1">.</span><span style="color: #586e75">monday?</span>        <span style="color: #657b83"># indicates if date is monday</span>
 </code></pre></div></div>
 
 <p>A few more examples:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">123</span><span class="p">.</span><span class="nf">digits</span>                  <span class="c1"># produces [3, 2, 1]</span>
-<span class="s2">"Test"</span><span class="p">.</span><span class="nf">chars</span>                <span class="c1"># produces ["T", "e", "s", "t"]</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">combination</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c1"># need combinations of array elements?</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">permutation</span>       <span class="c1"># or maybe permutations?</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">compact</span> <span class="c1"># returns new array without nil values</span>
-<span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]].</span><span class="nf">flatten</span>    <span class="c1"># produces [1, 2, 3, 4]</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">rotate</span>            <span class="c1"># produces [2, 3, 1]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #859900">123</span><span style="color: #93a1a1">.</span><span style="color: #586e75">digits</span>                  <span style="color: #657b83"># produces [3, 2, 1]</span>
+<span style="color: #859900">"Test"</span><span style="color: #93a1a1">.</span><span style="color: #586e75">chars</span>                <span style="color: #657b83"># produces ["T", "e", "s", "t"]</span>
+<span style="color: #93a1a1">[</span><span style="color: #859900">1</span><span style="color: #93a1a1">,</span> <span style="color: #859900">2</span><span style="color: #93a1a1">,</span> <span style="color: #859900">3</span><span style="color: #93a1a1">].</span><span style="color: #586e75">combination</span><span style="color: #93a1a1">(</span><span style="color: #859900">2</span><span style="color: #93a1a1">)</span>    <span style="color: #657b83"># need combinations of array elements?</span>
+<span style="color: #93a1a1">[</span><span style="color: #859900">1</span><span style="color: #93a1a1">,</span> <span style="color: #859900">2</span><span style="color: #93a1a1">,</span> <span style="color: #859900">3</span><span style="color: #93a1a1">].</span><span style="color: #586e75">permutation</span>       <span style="color: #657b83"># or maybe permutations?</span>
+<span style="color: #93a1a1">[</span><span style="color: #859900">1</span><span style="color: #93a1a1">,</span> <span style="color: #6c71c4">nil</span><span style="color: #93a1a1">,</span> <span style="color: #859900">2</span><span style="color: #93a1a1">,</span> <span style="color: #6c71c4">nil</span><span style="color: #93a1a1">,</span> <span style="color: #859900">3</span><span style="color: #93a1a1">].</span><span style="color: #586e75">compact</span> <span style="color: #657b83"># returns new array without nil values</span>
+<span style="color: #93a1a1">[[</span><span style="color: #859900">1</span><span style="color: #93a1a1">,</span> <span style="color: #859900">2</span><span style="color: #93a1a1">],</span> <span style="color: #93a1a1">[</span><span style="color: #859900">3</span><span style="color: #93a1a1">,</span> <span style="color: #859900">4</span><span style="color: #93a1a1">]].</span><span style="color: #586e75">flatten</span>    <span style="color: #657b83"># produces [1, 2, 3, 4]</span>
+<span style="color: #93a1a1">[</span><span style="color: #859900">1</span><span style="color: #93a1a1">,</span> <span style="color: #859900">2</span><span style="color: #93a1a1">,</span> <span style="color: #859900">3</span><span style="color: #93a1a1">].</span><span style="color: #586e75">rotate</span>            <span style="color: #657b83"># produces [2, 3, 1]</span>
 </code></pre></div></div>
 
 <p>Super handy and readable! Especially compared to e.g. the standard JavaScript library which is very poor.</p>
@@ -167,16 +167,16 @@ It’s great how many useful tools we get out of the box.</p>
 
 <p>I love the way I can chain Linq methods. And guess what… Ruby has very similar feature! Take a look at this two code snippets (first is C#, second is Ruby):</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">"Tom"</span><span class="p">,</span> <span class="s">"Jerry"</span><span class="p">,</span> <span class="s">"Spike"</span> <span class="p">}</span>
-    <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="sc">'e'</span><span class="p">))</span>
-    <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Length</span><span class="p">)</span>
-    <span class="p">.</span><span class="nf">Sum</span><span class="p">();</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">new</span> <span style="color: #cb4b16">string</span><span style="color: #93a1a1">[]</span> <span style="color: #93a1a1">{</span> <span style="color: #859900">"Tom"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Jerry"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Spike"</span> <span style="color: #93a1a1">}</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">Where</span><span style="color: #93a1a1">(</span><span style="color: #586e75">x</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Contains</span><span style="color: #93a1a1">(</span><span style="color: #859900">'e'</span><span style="color: #93a1a1">))</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">Select</span><span style="color: #93a1a1">(</span><span style="color: #586e75">x</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Length</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">Sum</span><span style="color: #93a1a1">();</span>
 </code></pre></div></div>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="s2">"Tom"</span><span class="p">,</span> <span class="s2">"Jerry"</span><span class="p">,</span> <span class="s2">"Spike"</span><span class="p">]</span>
-    <span class="p">.</span><span class="nf">filter</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">include?</span> <span class="s2">"e"</span><span class="p">}</span>
-    <span class="p">.</span><span class="nf">map</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">length</span><span class="p">}</span>
-    <span class="p">.</span><span class="nf">sum</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">[</span><span style="color: #859900">"Tom"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Jerry"</span><span style="color: #93a1a1">,</span> <span style="color: #859900">"Spike"</span><span style="color: #93a1a1">]</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">filter</span><span style="color: #93a1a1">{</span><span style="color: #93a1a1">|</span><span style="color: #586e75">x</span><span style="color: #93a1a1">|</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">include?</span> <span style="color: #859900">"e"</span><span style="color: #93a1a1">}</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">map</span><span style="color: #93a1a1">{</span><span style="color: #93a1a1">|</span><span style="color: #586e75">x</span><span style="color: #93a1a1">|</span> <span style="color: #586e75">x</span><span style="color: #93a1a1">.</span><span style="color: #586e75">length</span><span style="color: #93a1a1">}</span>
+    <span style="color: #93a1a1">.</span><span style="color: #586e75">sum</span>
 </code></pre></div></div>
 
 <p>At first glance, you can see that both pieces of code do exactly the same thing. For me both method chains are clearly traceable, readable and very elegant.</p>
@@ -209,7 +209,7 @@ It’s hard for me to find something that I don’t like.</p>
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

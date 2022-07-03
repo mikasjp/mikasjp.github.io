@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="I couldn’t debug the code because of my name" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/"},"description":"I finally managed to switch to JetBrains Rider. Unfortunately, I ran into some problems. Here is how to fix UnicodeDecodeError.","headline":"I couldn’t debug the code because of my name","dateModified":"2021-10-18T07:00:00+00:00","datePublished":"2021-10-18T07:00:00+00:00","url":"https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"I couldn’t debug the code because of my name","dateModified":"2021-10-18T07:00:00+00:00","datePublished":"2021-10-18T07:00:00+00:00","url":"https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/"},"@type":"BlogPosting","description":"I finally managed to switch to JetBrains Rider. Unfortunately, I ran into some problems. Here is how to fix UnicodeDecodeError.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -125,32 +125,32 @@ ERROR: .UnicodeDecodeError: 'utf-8' codec can't decode byte 0xb3 in position 536
 My temporary file was stored in the following location: 
 <code class="language-plaintext highlighter-rouge">%LocalAppData%\JetBrains\Rider2021.2\tmp\docker-compose.override.yml</code></p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.4"</span>
-<span class="na">services</span><span class="pi">:</span>
-  <span class="na">my_service</span><span class="pi">:</span>
-    <span class="na">entrypoint</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">/riderDebugger/runtime-dotnet.sh"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">/riderDebugger/JetBrains.Debugger.Worker.exe"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">--mode=server"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">--frontend-port=57001"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">--backend-port=57101"</span>
-    <span class="na">environment</span><span class="pi">:</span>
-      <span class="na">RIDER_DEBUGGER_LOG_DIR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/riderLogs"</span>
-      <span class="na">RESHARPER_LOG_CONF</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/riderLogsConf/backend-log.xml"</span>
-    <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">57001:57001"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">57101:57101"</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">C:</span><span class="se">\\</span><span class="s">Program</span><span class="nv"> </span><span class="s">Files</span><span class="nv"> </span><span class="s">(x86)</span><span class="se">\\</span><span class="s">JetBrains</span><span class="se">\\</span><span class="s">JetBrains</span><span class="nv"> </span><span class="s">Rider</span><span class="nv"> </span><span class="s">2021.1.1</span><span class="se">\\</span><span class="s">lib</span><span class="se">\\</span><span class="s">ReSharperHost:/riderDebugger"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Miko�aj</span><span class="se">\\</span><span class="s">AppData</span><span class="se">\\</span><span class="s">Local</span><span class="se">\\</span><span class="s">JetBrains</span><span class="se">\\</span><span class="s">Rider2021.2</span><span class="se">\\</span><span class="s">log</span><span class="se">\\</span><span class="s">DebuggerWorker</span><span class="se">\\\
-</span>      <span class="s">JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw"</span>
-    <span class="pi">-</span> <span class="s2">"</span><span class="s">C:</span><span class="se">\\</span><span class="s">Program</span><span class="nv"> </span><span class="s">Files</span><span class="nv"> </span><span class="s">(x86)</span><span class="se">\\</span><span class="s">JetBrains</span><span class="se">\\</span><span class="s">JetBrains</span><span class="nv"> </span><span class="s">Rider</span><span class="nv"> </span><span class="s">2021.1.1/bin:/riderLogsConf"</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #268bd2">version</span><span style="color: #93a1a1">:</span> <span style="color: #859900">"</span><span style="color: #859900">3.4"</span>
+<span style="color: #268bd2">services</span><span style="color: #93a1a1">:</span>
+  <span style="color: #268bd2">my_service</span><span style="color: #93a1a1">:</span>
+    <span style="color: #268bd2">entrypoint</span><span style="color: #93a1a1">:</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">/riderDebugger/runtime-dotnet.sh"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">/riderDebugger/JetBrains.Debugger.Worker.exe"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">--mode=server"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">--frontend-port=57001"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">--backend-port=57101"</span>
+    <span style="color: #268bd2">environment</span><span style="color: #93a1a1">:</span>
+      <span style="color: #268bd2">RIDER_DEBUGGER_LOG_DIR</span><span style="color: #93a1a1">:</span> <span style="color: #859900">"</span><span style="color: #859900">/riderLogs"</span>
+      <span style="color: #268bd2">RESHARPER_LOG_CONF</span><span style="color: #93a1a1">:</span> <span style="color: #859900">"</span><span style="color: #859900">/riderLogsConf/backend-log.xml"</span>
+    <span style="color: #268bd2">ports</span><span style="color: #93a1a1">:</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">57001:57001"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">57101:57101"</span>
+    <span style="color: #268bd2">volumes</span><span style="color: #93a1a1">:</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">C:</span><span style="color: #d33682">\\</span><span style="color: #859900">Program</span><span style="color: #586e75"> </span><span style="color: #859900">Files</span><span style="color: #586e75"> </span><span style="color: #859900">(x86)</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #586e75"> </span><span style="color: #859900">Rider</span><span style="color: #586e75"> </span><span style="color: #859900">2021.1.1</span><span style="color: #d33682">\\</span><span style="color: #859900">lib</span><span style="color: #d33682">\\</span><span style="color: #859900">ReSharperHost:/riderDebugger"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">C:</span><span style="color: #d33682">\\</span><span style="color: #859900">Users</span><span style="color: #d33682">\\</span><span style="color: #859900">Miko�aj</span><span style="color: #d33682">\\</span><span style="color: #859900">AppData</span><span style="color: #d33682">\\</span><span style="color: #859900">Local</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #d33682">\\</span><span style="color: #859900">Rider2021.2</span><span style="color: #d33682">\\</span><span style="color: #859900">log</span><span style="color: #d33682">\\</span><span style="color: #859900">DebuggerWorker</span><span style="color: #d33682">\\\
+</span>      <span style="color: #859900">JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw"</span>
+    <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">C:</span><span style="color: #d33682">\\</span><span style="color: #859900">Program</span><span style="color: #586e75"> </span><span style="color: #859900">Files</span><span style="color: #586e75"> </span><span style="color: #859900">(x86)</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #586e75"> </span><span style="color: #859900">Rider</span><span style="color: #586e75"> </span><span style="color: #859900">2021.1.1/bin:/riderLogsConf"</span>
 </code></pre></div></div>
 
 <p>Take a look at the volumes section. One of the entries contains some strange character.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="s2">"</span><span class="s">C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Miko�aj</span><span class="se">\\</span><span class="s">AppData</span><span class="se">\\</span><span class="s">Local</span><span class="se">\\</span><span class="s">JetBrains</span><span class="se">\\</span><span class="s">Rider2021.2</span><span class="se">\\</span><span class="s">log</span><span class="se">\\</span><span class="s">DebuggerWorker</span><span class="se">\\\
-</span>      <span class="s">JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw"</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">C:</span><span style="color: #d33682">\\</span><span style="color: #859900">Users</span><span style="color: #d33682">\\</span><span style="color: #859900">Miko�aj</span><span style="color: #d33682">\\</span><span style="color: #859900">AppData</span><span style="color: #d33682">\\</span><span style="color: #859900">Local</span><span style="color: #d33682">\\</span><span style="color: #859900">JetBrains</span><span style="color: #d33682">\\</span><span style="color: #859900">Rider2021.2</span><span style="color: #d33682">\\</span><span style="color: #859900">log</span><span style="color: #d33682">\\</span><span style="color: #859900">DebuggerWorker</span><span style="color: #d33682">\\\
+</span>      <span style="color: #859900">JetBrains.Debugger.Worker.2021_10_17_20_32_30:/riderLogs:rw"</span>
 </code></pre></div></div>
 
 <p>My username contains a <code class="language-plaintext highlighter-rouge">"ł"</code> character and because of it, this file cannot be processed properly.</p>
@@ -171,7 +171,7 @@ My temporary file was stored in the following location:
 
 <p>Add the following line to it:</p>
 
-<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">idea.system.path</span><span class="p">=</span><span class="s">${root.dir}/JetBrains/Rider/system</span>
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #586e75">idea.system.path</span><span style="color: #93a1a1">=</span><span style="color: #859900">${root.dir}/JetBrains/Rider/system</span>
 </code></pre></div></div>
 
 <p>Save the file and restart the IDE. From now on, Rider will keep temporary files in <code class="language-plaintext highlighter-rouge">C:\JetBrains\Rider\system</code> directory. Of course you may have a different drive under the variable <code class="language-plaintext highlighter-rouge">${root.dir}</code>, but the idea is the same.</p>
@@ -201,7 +201,7 @@ My temporary file was stored in the following location:
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

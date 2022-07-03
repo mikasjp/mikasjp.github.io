@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/"},"description":"Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.","headline":"ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue","dateModified":"2021-04-14T06:30:00+00:00","datePublished":"2021-04-14T06:30:00+00:00","url":"https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"ASP.NET Core, Newtonsoft JSON serializer and DateTime handling issue","dateModified":"2021-04-14T06:30:00+00:00","datePublished":"2021-04-14T06:30:00+00:00","url":"https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/newtonsoft-datetime-deserialization-issue-c-sharp/"},"@type":"BlogPosting","description":"Today I encountered an interesting case. I got a report that “something changes the date format while processing data”. I started debugging our distributed system looking for the source of the problem. It took me a while, so I’d like to share this story today, so you don’t have to waste your time.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -108,35 +108,35 @@
 
 <p>One of the microservices handles the HTTP POST request which the body model is similar to this:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleModel</span>
-<span class="p">{</span>
-    <span class="c1">// ...</span>
-    <span class="k">public</span> <span class="n">JObject</span> <span class="n">DynamicObject</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">ExampleModel</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #657b83">// ...</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #586e75">JObject</span> <span style="color: #586e75">DynamicObject</span> <span style="color: #93a1a1">{</span> <span style="color: #6c71c4">get</span><span style="color: #93a1a1">;</span> <span style="color: #6c71c4">set</span><span style="color: #93a1a1">;</span> <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>For simplicity let’s say that exactly that request model is stored in NoSQL database and could be retrieved with another endpoint.</p>
 
 <p>Another service calls our application with a following HTTP request body:</p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
-    </span><span class="nl">"dynamicObject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"someStringProperty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-04-14T08:30:00.000+0000"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"anotherStringProperty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QWERTY"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">{</span><span style="color: #586e75">
+    </span><span style="color: #002b36;background-color: #dc322f">//</span><span style="color: #586e75"> </span><span style="color: #002b36;background-color: #dc322f">...</span><span style="color: #586e75">
+    </span><span style="color: #586e75">"dynamicObject"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #93a1a1">{</span><span style="color: #586e75">
+        </span><span style="color: #586e75">"someStringProperty"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #859900">"2021-04-14T08:30:00.000+0000"</span><span style="color: #93a1a1">,</span><span style="color: #586e75">
+        </span><span style="color: #586e75">"anotherStringProperty"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #859900">"QWERTY"</span><span style="color: #586e75">
+    </span><span style="color: #93a1a1">}</span><span style="color: #586e75">
+</span><span style="color: #93a1a1">}</span><span style="color: #586e75">
 </span></code></pre></div></div>
 
 <p>Then requests it back and gets following response:</p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
-    </span><span class="nl">"dynamicObject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"someStringProperty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-04-14T08:30:00Z"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">wtf?!</span><span class="w">
-        </span><span class="nl">"anotherStringProperty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QWERTY"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #93a1a1">{</span><span style="color: #586e75">
+    </span><span style="color: #002b36;background-color: #dc322f">//</span><span style="color: #586e75"> </span><span style="color: #002b36;background-color: #dc322f">...</span><span style="color: #586e75">
+    </span><span style="color: #586e75">"dynamicObject"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #93a1a1">{</span><span style="color: #586e75">
+        </span><span style="color: #586e75">"someStringProperty"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #859900">"2021-04-14T08:30:00Z"</span><span style="color: #93a1a1">,</span><span style="color: #586e75"> </span><span style="color: #002b36;background-color: #dc322f">//</span><span style="color: #586e75"> </span><span style="color: #002b36;background-color: #dc322f">wtf?!</span><span style="color: #586e75">
+        </span><span style="color: #586e75">"anotherStringProperty"</span><span style="color: #93a1a1">:</span><span style="color: #586e75"> </span><span style="color: #859900">"QWERTY"</span><span style="color: #586e75">
+    </span><span style="color: #93a1a1">}</span><span style="color: #586e75">
+</span><span style="color: #93a1a1">}</span><span style="color: #586e75">
 </span></code></pre></div></div>
 
 <p>As you can see, the value of <code class="language-plaintext highlighter-rouge">someStringProperty</code> is different from what was sent before! In my case, this is unacceptable behavior. I need it to be exactly the same string.</p>
@@ -147,11 +147,11 @@
 
 <p>The solution is to create serializer with the following <code class="language-plaintext highlighter-rouge">JsonSerializerSettings</code>:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nf">JsonSerializerSettings</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">// by default it is DateParseHandling.DateTime</span>
-    <span class="n">DateParseHandling</span> <span class="p">=</span> <span class="n">DateParseHandling</span><span class="p">.</span><span class="n">None</span>
-<span class="p">};</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">new</span> <span style="color: #586e75">JsonSerializerSettings</span><span style="color: #93a1a1">()</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #657b83">// by default it is DateParseHandling.DateTime</span>
+    <span style="color: #586e75">DateParseHandling</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">DateParseHandling</span><span style="color: #93a1a1">.</span><span style="color: #586e75">None</span>
+<span style="color: #93a1a1">};</span>
 </code></pre></div></div>
 
 <p>Now <code class="language-plaintext highlighter-rouge">someStringProperty</code> will be parsed as a string. Fixed!</p>
@@ -181,7 +181,7 @@
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

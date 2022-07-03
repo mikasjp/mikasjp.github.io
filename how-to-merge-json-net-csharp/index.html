@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="How to merge JSON documents in .NET Core and .NET 5?" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/"},"description":"Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?","headline":"How to merge JSON documents in .NET Core and .NET 5?","dateModified":"2021-04-19T15:30:00+00:00","datePublished":"2021-04-19T15:30:00+00:00","url":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"How to merge JSON documents in .NET Core and .NET 5?","dateModified":"2021-04-19T15:30:00+00:00","datePublished":"2021-04-19T15:30:00+00:00","url":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/how-to-merge-json-net-csharp/"},"@type":"BlogPosting","description":"Let’s say we have two JSON documents that we would like to merge. How can this be achieved using Newtonsoft.Json and System.Text.Json libraries?","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -108,13 +108,13 @@
 
 <p>In .NET Core, until version 3 was released, the default serializer was the well-known and liked <a href="https://www.nuget.org/packages/Newtonsoft.Json/"><code class="language-plaintext highlighter-rouge">Newtonsoft.Json</code></a>. Merging JSON documents with this library is very simple:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">object_A</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">"{ 'A': 1, 'B': 2, 'C': 3 }"</span><span class="p">);</span>
-<span class="kt">var</span> <span class="n">object_B</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">"{ 'C': 4, 'D': 5, 'E': 6 }"</span><span class="p">);</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #cb4b16">var</span> <span style="color: #586e75">object_A</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">JObject</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Parse</span><span style="color: #93a1a1">(</span><span style="color: #859900">"{ 'A': 1, 'B': 2, 'C': 3 }"</span><span style="color: #93a1a1">);</span>
+<span style="color: #cb4b16">var</span> <span style="color: #586e75">object_B</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">JObject</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Parse</span><span style="color: #93a1a1">(</span><span style="color: #859900">"{ 'C': 4, 'D': 5, 'E': 6 }"</span><span style="color: #93a1a1">);</span>
 
-<span class="kt">var</span> <span class="n">object_C</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JObject</span><span class="p">();</span>
-<span class="n">object_C</span><span class="p">.</span><span class="nf">Merge</span><span class="p">(</span><span class="n">object_A</span><span class="p">);</span>
-<span class="n">object_C</span><span class="p">.</span><span class="nf">Merge</span><span class="p">(</span><span class="n">object_B</span><span class="p">);</span>
-<span class="cm">/*
+<span style="color: #cb4b16">var</span> <span style="color: #586e75">object_C</span> <span style="color: #93a1a1">=</span> <span style="color: #6c71c4">new</span> <span style="color: #586e75">JObject</span><span style="color: #93a1a1">();</span>
+<span style="color: #586e75">object_C</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Merge</span><span style="color: #93a1a1">(</span><span style="color: #586e75">object_A</span><span style="color: #93a1a1">);</span>
+<span style="color: #586e75">object_C</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Merge</span><span style="color: #93a1a1">(</span><span style="color: #586e75">object_B</span><span style="color: #93a1a1">);</span>
+<span style="color: #657b83">/*
 object_C is:
 {
   "A": 1,
@@ -138,7 +138,7 @@ object_C is:
 
 <p>Here is a BenchmarkDotNet comparison results of both APIs:</p>
 
-<table>
+<table class="table-overflow">
   <thead>
     <tr>
       <th>Method</th>
@@ -206,7 +206,7 @@ object_C is:
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

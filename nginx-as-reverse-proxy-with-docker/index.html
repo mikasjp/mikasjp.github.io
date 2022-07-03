@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="How to configure Nginx reverse proxy with Docker?" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/"},"description":"How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example.","headline":"How to configure Nginx reverse proxy with Docker?","dateModified":"2021-04-08T15:30:00+00:00","datePublished":"2021-04-08T15:30:00+00:00","url":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"How to configure Nginx reverse proxy with Docker?","dateModified":"2021-04-08T15:30:00+00:00","datePublished":"2021-04-08T15:30:00+00:00","url":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/nginx-as-reverse-proxy-with-docker/"},"@type":"BlogPosting","description":"How to set up Nginx as a reverse proxy? How to achieve it with Docker and docker-compose? Today I will show you a simple setup example.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -121,17 +121,17 @@
 <h2 id="configuration">Configuration</h2>
 
 <p>To begin with, we define the structure of the files and directories that will be discussed:</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
-├── docker-compose.yml      <span class="c"># infrastructure definition</span>
-├── nginx_configs           <span class="c"># proxy configuration files</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #586e75">.</span>
+├── docker-compose.yml      <span style="color: #657b83"># infrastructure definition</span>
+├── nginx_configs           <span style="color: #657b83"># proxy configuration files</span>
 │   ├── default.conf
 │   ├── service_a.conf
 │   └── service_b.conf
-├── proxy                   <span class="c"># proxy HTML contents</span>
+├── proxy                   <span style="color: #657b83"># proxy HTML contents</span>
 │   └── index.html
-├── service_a               <span class="c"># service_a HTML contents</span>
+├── service_a               <span style="color: #657b83"># service_a HTML contents</span>
 │   └── index.html
-└── service_b               <span class="c"># service_b HTML contents</span>
+└── service_b               <span style="color: #657b83"># service_b HTML contents</span>
     └── index.html
 </code></pre></div></div>
 
@@ -139,35 +139,35 @@
 
 <p>To quickly set up our infrastructure, we will use the following <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #268bd2">version</span><span style="color: #93a1a1">:</span> <span style="color: #859900">'</span><span style="color: #859900">3.9'</span>
 
-<span class="na">services</span><span class="pi">:</span>
-  <span class="na">proxy</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">./nginx_configs/:/etc/nginx/conf.d/:ro</span>
-      <span class="pi">-</span> <span class="s">./proxy/:/usr/share/nginx/html/:ro</span>
-    <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:80"</span>
-    <span class="na">networks</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">internal-network</span>
-  <span class="na">service_a</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
-    <span class="na">hostname</span><span class="pi">:</span> <span class="s">service_a</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">./service_a/:/usr/share/nginx/html/:ro</span>
-    <span class="na">networks</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">internal-network</span>
-  <span class="na">service_b</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1-alpine</span>
-    <span class="na">hostname</span><span class="pi">:</span> <span class="s">service_b</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">./service_b/:/usr/share/nginx/html/:ro</span>
-    <span class="na">networks</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">internal-network</span>
+<span style="color: #268bd2">services</span><span style="color: #93a1a1">:</span>
+  <span style="color: #268bd2">proxy</span><span style="color: #93a1a1">:</span>
+    <span style="color: #268bd2">image</span><span style="color: #93a1a1">:</span> <span style="color: #859900">nginx:1-alpine</span>
+    <span style="color: #268bd2">volumes</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">./nginx_configs/:/etc/nginx/conf.d/:ro</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">./proxy/:/usr/share/nginx/html/:ro</span>
+    <span style="color: #268bd2">ports</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">"</span><span style="color: #859900">8080:80"</span>
+    <span style="color: #268bd2">networks</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">internal-network</span>
+  <span style="color: #268bd2">service_a</span><span style="color: #93a1a1">:</span>
+    <span style="color: #268bd2">image</span><span style="color: #93a1a1">:</span> <span style="color: #859900">nginx:1-alpine</span>
+    <span style="color: #268bd2">hostname</span><span style="color: #93a1a1">:</span> <span style="color: #859900">service_a</span>
+    <span style="color: #268bd2">volumes</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">./service_a/:/usr/share/nginx/html/:ro</span>
+    <span style="color: #268bd2">networks</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">internal-network</span>
+  <span style="color: #268bd2">service_b</span><span style="color: #93a1a1">:</span>
+    <span style="color: #268bd2">image</span><span style="color: #93a1a1">:</span> <span style="color: #859900">nginx:1-alpine</span>
+    <span style="color: #268bd2">hostname</span><span style="color: #93a1a1">:</span> <span style="color: #859900">service_b</span>
+    <span style="color: #268bd2">volumes</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">./service_b/:/usr/share/nginx/html/:ro</span>
+    <span style="color: #268bd2">networks</span><span style="color: #93a1a1">:</span>
+      <span style="color: #93a1a1">-</span> <span style="color: #859900">internal-network</span>
 
-<span class="na">networks</span><span class="pi">:</span>
-  <span class="na">internal-network</span><span class="pi">:</span>
+<span style="color: #268bd2">networks</span><span style="color: #93a1a1">:</span>
+  <span style="color: #268bd2">internal-network</span><span style="color: #93a1a1">:</span>
 </code></pre></div></div>
 
 <p>Service A and service B have to be in the same network as proxy. In our case it is a network called <code class="language-plaintext highlighter-rouge">internal-network</code>.</p>
@@ -182,57 +182,57 @@
 
 <p><code class="language-plaintext highlighter-rouge">nginx_configs/service_a.conf</code> contents:</p>
 
-<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">upstream</span> <span class="s">service_a</span> <span class="p">{</span>
-    <span class="c1"># Here we configure Nginx where to redirect the traffic</span>
-    <span class="kn">server</span> <span class="s">service_a:80</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">upstream</span> <span style="color: #859900">service_a</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #657b83"># Here we configure Nginx where to redirect the traffic</span>
+    <span style="color: #6c71c4">server</span> <span style="color: #859900">service_a:80</span><span style="color: #93a1a1">;</span>
+<span style="color: #93a1a1">}</span>
 
-<span class="k">server</span> <span class="p">{</span>
-    <span class="c1"># The port on which our proxy is listening </span>
-    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
-    <span class="c1"># Domain for which traffic is to be redirected</span>
-    <span class="kn">server_name</span> <span class="s">service_a.example.com</span><span class="p">;</span>
+<span style="color: #6c71c4">server</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #657b83"># The port on which our proxy is listening </span>
+    <span style="color: #6c71c4">listen</span> <span style="color: #859900">80</span><span style="color: #93a1a1">;</span>
+    <span style="color: #657b83"># Domain for which traffic is to be redirected</span>
+    <span style="color: #6c71c4">server_name</span> <span style="color: #859900">service_a.example.com</span><span style="color: #93a1a1">;</span>
 
-    <span class="c1"># Forward Host header</span>
-    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+    <span style="color: #657b83"># Forward Host header</span>
+    <span style="color: #6c71c4">proxy_set_header</span> <span style="color: #859900">Host</span> <span style="color: #586e75">$host</span><span style="color: #93a1a1">;</span>
 
-    <span class="c1"># We want all locations to point to service A</span>
-    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
-        <span class="c1"># service_a is our upstream</span>
-        <span class="kn">proxy_pass</span> <span class="s">http://service_a</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    <span style="color: #657b83"># We want all locations to point to service A</span>
+    <span style="color: #6c71c4">location</span> <span style="color: #586e75">/</span> <span style="color: #93a1a1">{</span>
+        <span style="color: #657b83"># service_a is our upstream</span>
+        <span style="color: #6c71c4">proxy_pass</span> <span style="color: #859900">http://service_a</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">nginx_configs/service_b.conf</code> contents:</p>
 
-<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">upstream</span> <span class="s">service_b</span> <span class="p">{</span>
-    <span class="kn">server</span> <span class="s">service_b:80</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">upstream</span> <span style="color: #859900">service_b</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">server</span> <span style="color: #859900">service_b:80</span><span style="color: #93a1a1">;</span>
+<span style="color: #93a1a1">}</span>
 
-<span class="k">server</span> <span class="p">{</span>
-    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
-    <span class="kn">server_name</span> <span class="s">service_b.example.com</span><span class="p">;</span>
+<span style="color: #6c71c4">server</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">listen</span> <span style="color: #859900">80</span><span style="color: #93a1a1">;</span>
+    <span style="color: #6c71c4">server_name</span> <span style="color: #859900">service_b.example.com</span><span style="color: #93a1a1">;</span>
 
-    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+    <span style="color: #6c71c4">proxy_set_header</span> <span style="color: #859900">Host</span> <span style="color: #586e75">$host</span><span style="color: #93a1a1">;</span>
 
-    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
-        <span class="kn">proxy_pass</span> <span class="s">http://service_b</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span style="color: #6c71c4">location</span> <span style="color: #586e75">/</span> <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">proxy_pass</span> <span style="color: #859900">http://service_b</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>The following configuration allows the proxy to handle traffic going directly to it. If we do not define a default configuration, Nginx will direct traffic to the first service encountered in the configuration. We want to avoid this scenario.</p>
 
 <p><code class="language-plaintext highlighter-rouge">nginx_configs/default.conf</code> contents:</p>
 
-<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
-    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">server</span> <span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">listen</span> <span style="color: #859900">80</span><span style="color: #93a1a1">;</span>
 
-    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
-        <span class="kn">root</span>    <span class="n">/usr/share/nginx/html</span><span class="p">;</span>
-        <span class="kn">index</span>   <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    <span style="color: #6c71c4">location</span> <span style="color: #586e75">/</span> <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">root</span>    <span style="color: #586e75">/usr/share/nginx/html</span><span style="color: #93a1a1">;</span>
+        <span style="color: #6c71c4">index</span>   <span style="color: #859900">index.html</span> <span style="color: #859900">index.htm</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <h3 id="services-configuration">Services configuration</h3>
@@ -258,16 +258,16 @@
 
 <p>Now is the time to get our infrastructure up and running and test the proxy server. Run docker-compose and wait for all containers to start working.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker-compose up <span class="nt">-d</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #586e75">$ </span>docker-compose up <span style="color: #b58900">-d</span>
 </code></pre></div></div>
 
 <p>Then make the following requests to our proxy.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-s</span> http://localhost:8080
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #586e75">$ </span>curl <span style="color: #b58900">-s</span> http://localhost:8080
 This is proxy service
-<span class="nv">$ </span>curl <span class="nt">-s</span> <span class="nt">-H</span> <span class="s2">"Host: service_a.example.com"</span> http://localhost:8080
+<span style="color: #586e75">$ </span>curl <span style="color: #b58900">-s</span> <span style="color: #b58900">-H</span> <span style="color: #859900">"Host: service_a.example.com"</span> http://localhost:8080
 This is service A
-<span class="nv">$ </span>curl <span class="nt">-s</span> <span class="nt">-H</span> <span class="s2">"Host: service_b.example.com"</span> http://localhost:8080
+<span style="color: #586e75">$ </span>curl <span style="color: #b58900">-s</span> <span style="color: #b58900">-H</span> <span style="color: #859900">"Host: service_b.example.com"</span> http://localhost:8080
 This is service B
 </code></pre></div></div>
 
@@ -296,7 +296,7 @@ This is service B
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Extension methods in C# and Ruby" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/"},"description":"Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.","headline":"Extension methods in C# and Ruby","dateModified":"2021-04-12T06:00:00+00:00","datePublished":"2021-04-12T06:00:00+00:00","url":"https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Extension methods in C# and Ruby","dateModified":"2021-04-12T06:00:00+00:00","datePublished":"2021-04-12T06:00:00+00:00","url":"https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/extension-methods-in-ruby-and-c-sharp/"},"@type":"BlogPosting","description":"Extending classes with new methods is a pretty useful feature of object-oriented programming languages. However, implementation of extension methods can be more or less simple and elegant. Today I would like to compare implementation of extension methods in C# and Ruby.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -108,25 +108,25 @@
 
 <p>Let’s consider the following example class.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleClass</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="kt">string</span> <span class="nf">GetName</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="s">"Mikołaj"</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">ExampleClass</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #cb4b16">string</span> <span style="color: #586e75">GetName</span><span style="color: #93a1a1">()</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #6c71c4">return</span> <span style="color: #859900">"Mikołaj"</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>To extend it with a new method we have to implement another independent static class, which has an implementation of our extension method.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">ExampleClassExtensions</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">Greet</span><span class="p">(</span><span class="k">this</span> <span class="n">ExampleClass</span> <span class="n">exampleClass</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kt">var</span> <span class="n">name</span> <span class="p">=</span> <span class="n">exampleClass</span><span class="p">.</span><span class="nf">GetName</span><span class="p">();</span>
-        <span class="k">return</span> <span class="s">$"Hello </span><span class="p">{</span><span class="n">name</span><span class="p">}</span><span class="s">!"</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">static</span> <span style="color: #6c71c4">class</span> <span style="color: #b58900">ExampleClassExtensions</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #6c71c4">public</span> <span style="color: #6c71c4">static</span> <span style="color: #cb4b16">string</span> <span style="color: #586e75">Greet</span><span style="color: #93a1a1">(</span><span style="color: #6c71c4">this</span> <span style="color: #586e75">ExampleClass</span> <span style="color: #586e75">exampleClass</span><span style="color: #93a1a1">)</span>
+    <span style="color: #93a1a1">{</span>
+        <span style="color: #cb4b16">var</span> <span style="color: #586e75">name</span> <span style="color: #93a1a1">=</span> <span style="color: #586e75">exampleClass</span><span style="color: #93a1a1">.</span><span style="color: #586e75">GetName</span><span style="color: #93a1a1">();</span>
+        <span style="color: #6c71c4">return</span> <span style="color: #859900">$"Hello </span><span style="color: #93a1a1">{</span><span style="color: #586e75">name</span><span style="color: #93a1a1">}</span><span style="color: #859900">!"</span><span style="color: #93a1a1">;</span>
+    <span style="color: #93a1a1">}</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>There are two important things. The first parameter of the extension method have to be preceded by the <code class="language-plaintext highlighter-rouge">this</code> keyword and should be of the type on which the method is operating.</p>
@@ -137,20 +137,20 @@
 
 <p>Okay, so let’s start with our example class which will be extended with extra method.</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExampleClass</span>
-    <span class="k">def</span> <span class="nf">get_name</span>
-        <span class="s2">"Mikołaj"</span>
-    <span class="k">end</span>
-<span class="k">end</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">class</span> <span style="color: #b58900">ExampleClass</span>
+    <span style="color: #6c71c4">def</span> <span style="color: #586e75">get_name</span>
+        <span style="color: #859900">"Mikołaj"</span>
+    <span style="color: #6c71c4">end</span>
+<span style="color: #6c71c4">end</span>
 </code></pre></div></div>
 
 <p>Implementation of an extension method is as simple as redefining our ExampleClass with an extra method. Take a look:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExampleClass</span>
-    <span class="k">def</span> <span class="nf">greet</span>
-        <span class="s2">"Hello </span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">get_name</span><span class="si">}</span><span class="s2">!"</span>
-    <span class="k">end</span>
-<span class="k">end</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">class</span> <span style="color: #b58900">ExampleClass</span>
+    <span style="color: #6c71c4">def</span> <span style="color: #586e75">greet</span>
+        <span style="color: #859900">"Hello </span><span style="color: #d33682">#{</span><span style="color: #586e75">self</span><span style="color: #93a1a1">.</span><span style="color: #586e75">get_name</span><span style="color: #d33682">}</span><span style="color: #859900">!"</span>
+    <span style="color: #6c71c4">end</span>
+<span style="color: #6c71c4">end</span>
 </code></pre></div></div>
 
 <p>That’s it. Super simple.</p>
@@ -180,7 +180,7 @@
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

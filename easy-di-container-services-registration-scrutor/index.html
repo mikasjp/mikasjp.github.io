@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Easy service registration in .NET DI containers using Scrutor" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/easy-di-container-services-registration-scrutor/"},"description":"I like to make my life easier. If I can automate a process, I’d love to do it. It is no different in programming. Today I would like to show you how to automate dependency registration in DI container.","headline":"Easy service registration in .NET DI containers using Scrutor","dateModified":"2021-04-21T11:00:00+00:00","datePublished":"2021-04-21T11:00:00+00:00","url":"https://mikolaj-kaminski.com/easy-di-container-services-registration-scrutor/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"Easy service registration in .NET DI containers using Scrutor","dateModified":"2021-04-21T11:00:00+00:00","datePublished":"2021-04-21T11:00:00+00:00","url":"https://mikolaj-kaminski.com/easy-di-container-services-registration-scrutor/","author":{"@type":"Person","name":"Mikołaj Kamiński"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://mikolaj-kaminski.com/easy-di-container-services-registration-scrutor/"},"@type":"BlogPosting","description":"I like to make my life easier. If I can automate a process, I’d love to do it. It is no different in programming. Today I would like to show you how to automate dependency registration in DI container.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mikolaj-kaminski.com/feed.xml" title="Mikołaj Kamiński" /><script async src="https://www.googletagmanager.com/gtag/js?id=G-JW1354ZTBQ"></script>
 <script>
@@ -108,15 +108,15 @@
 
 <p>For example, we have a set of dependencies to register:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">services</span>
-        <span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">ICommandHandler</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;,</span> <span class="n">CreateUserCommandHandler</span><span class="p">&gt;()</span>
-        <span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">ICommandHandler</span><span class="p">&lt;</span><span class="n">DeleteUserCommand</span><span class="p">&gt;,</span> <span class="n">DeleteUserCommandHandler</span><span class="p">&gt;()</span>
-        <span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">ICommandHandler</span><span class="p">&lt;</span><span class="n">AddUserPostCommand</span><span class="p">&gt;,</span> <span class="n">AddUserPostCommandHandler</span><span class="p">&gt;()</span>
-        <span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">IQueryHandler</span><span class="p">&lt;</span><span class="n">GetUserQuery</span><span class="p">,</span> <span class="n">User</span><span class="p">&gt;,</span> <span class="n">GetUserQueryHandler</span><span class="p">&gt;()</span>
-        <span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">IQueryHandler</span><span class="p">&lt;</span><span class="n">GetUserPostQuery</span><span class="p">,</span> <span class="n">Post</span><span class="p">&gt;,</span> <span class="n">GetUserPostQueryHandler</span><span class="p">&gt;();</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">void</span> <span style="color: #586e75">ConfigureServices</span><span style="color: #93a1a1">(</span><span style="color: #586e75">IServiceCollection</span> <span style="color: #586e75">services</span><span style="color: #93a1a1">)</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #586e75">services</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">AddTransient</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">ICommandHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;,</span> <span style="color: #586e75">CreateUserCommandHandler</span><span style="color: #93a1a1">&gt;()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">AddTransient</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">ICommandHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">DeleteUserCommand</span><span style="color: #93a1a1">&gt;,</span> <span style="color: #586e75">DeleteUserCommandHandler</span><span style="color: #93a1a1">&gt;()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">AddTransient</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">ICommandHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">AddUserPostCommand</span><span style="color: #93a1a1">&gt;,</span> <span style="color: #586e75">AddUserPostCommandHandler</span><span style="color: #93a1a1">&gt;()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">AddTransient</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">IQueryHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">GetUserQuery</span><span style="color: #93a1a1">,</span> <span style="color: #586e75">User</span><span style="color: #93a1a1">&gt;,</span> <span style="color: #586e75">GetUserQueryHandler</span><span style="color: #93a1a1">&gt;()</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">AddTransient</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">IQueryHandler</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">GetUserPostQuery</span><span style="color: #93a1a1">,</span> <span style="color: #586e75">Post</span><span style="color: #93a1a1">&gt;,</span> <span style="color: #586e75">GetUserPostQueryHandler</span><span style="color: #93a1a1">&gt;();</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>It is not difficult to imagine a scenario where there will be many more dependencies to register. Luckily, there’s an easy way to automate this!</p>
@@ -127,17 +127,17 @@
 
 <p>The following code does exactly the same as the previous example, except that it does it automatically.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">services</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="n">scan</span> <span class="p">=&gt;</span> <span class="n">scan</span>
-        <span class="p">.</span><span class="n">FromAssemblyOf</span><span class="p">&lt;</span><span class="n">CreateUserCommand</span><span class="p">&gt;()</span> <span class="c1">// Indicates the assembly where all dependencies are located </span>
-            <span class="p">.</span><span class="nf">AddClasses</span><span class="p">(</span><span class="n">classes</span> <span class="p">=&gt;</span> <span class="n">classes</span><span class="p">.</span><span class="nf">AssignableTo</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">ICommandHandler</span><span class="p">&lt;&gt;)))</span> <span class="c1">// Register all command handlers</span>
-                <span class="p">.</span><span class="nf">AsImplementedInterfaces</span><span class="p">()</span> <span class="c1">// We will be able to resolve them by their interfaces</span>
-                <span class="p">.</span><span class="nf">WithTransientLifetime</span><span class="p">()</span> <span class="c1">// Scope definition</span>
-            <span class="p">.</span><span class="nf">AddClasses</span><span class="p">(</span><span class="n">classes</span> <span class="p">=&gt;</span> <span class="n">classes</span><span class="p">.</span><span class="nf">AssignableTo</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IQueryHandler</span><span class="p">&lt;,&gt;)))</span>
-                <span class="p">.</span><span class="nf">AsImplementedInterfaces</span><span class="p">()</span>
-                <span class="p">.</span><span class="nf">WithTransientLifetime</span><span class="p">());</span>
-<span class="p">}</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color: #6c71c4">public</span> <span style="color: #6c71c4">void</span> <span style="color: #586e75">ConfigureServices</span><span style="color: #93a1a1">(</span><span style="color: #586e75">IServiceCollection</span> <span style="color: #586e75">services</span><span style="color: #93a1a1">)</span>
+<span style="color: #93a1a1">{</span>
+    <span style="color: #586e75">services</span><span style="color: #93a1a1">.</span><span style="color: #586e75">Scan</span><span style="color: #93a1a1">(</span><span style="color: #586e75">scan</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">scan</span>
+        <span style="color: #93a1a1">.</span><span style="color: #586e75">FromAssemblyOf</span><span style="color: #93a1a1">&lt;</span><span style="color: #586e75">CreateUserCommand</span><span style="color: #93a1a1">&gt;()</span> <span style="color: #657b83">// Indicates the assembly where all dependencies are located </span>
+            <span style="color: #93a1a1">.</span><span style="color: #586e75">AddClasses</span><span style="color: #93a1a1">(</span><span style="color: #586e75">classes</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">classes</span><span style="color: #93a1a1">.</span><span style="color: #586e75">AssignableTo</span><span style="color: #93a1a1">(</span><span style="color: #6c71c4">typeof</span><span style="color: #93a1a1">(</span><span style="color: #586e75">ICommandHandler</span><span style="color: #93a1a1">&lt;&gt;)))</span> <span style="color: #657b83">// Register all command handlers</span>
+                <span style="color: #93a1a1">.</span><span style="color: #586e75">AsImplementedInterfaces</span><span style="color: #93a1a1">()</span> <span style="color: #657b83">// We will be able to resolve them by their interfaces</span>
+                <span style="color: #93a1a1">.</span><span style="color: #586e75">WithTransientLifetime</span><span style="color: #93a1a1">()</span> <span style="color: #657b83">// Scope definition</span>
+            <span style="color: #93a1a1">.</span><span style="color: #586e75">AddClasses</span><span style="color: #93a1a1">(</span><span style="color: #586e75">classes</span> <span style="color: #93a1a1">=&gt;</span> <span style="color: #586e75">classes</span><span style="color: #93a1a1">.</span><span style="color: #586e75">AssignableTo</span><span style="color: #93a1a1">(</span><span style="color: #6c71c4">typeof</span><span style="color: #93a1a1">(</span><span style="color: #586e75">IQueryHandler</span><span style="color: #93a1a1">&lt;,&gt;)))</span>
+                <span style="color: #93a1a1">.</span><span style="color: #586e75">AsImplementedInterfaces</span><span style="color: #93a1a1">()</span>
+                <span style="color: #93a1a1">.</span><span style="color: #586e75">WithTransientLifetime</span><span style="color: #93a1a1">());</span>
+<span style="color: #93a1a1">}</span>
 </code></pre></div></div>
 
 <p>Now you won’t have to remember to register another dependency. Super handy, huh?</p>
@@ -163,7 +163,7 @@
         </div>
         <div class="tile has-text-right has-text-centered-mobile">
             <span style="display:block;margin-left:auto">
-                &copy; 2021 Mikołaj Kamiński
+                &copy; 2022 Mikołaj Kamiński
                 
         </span>
         </div>

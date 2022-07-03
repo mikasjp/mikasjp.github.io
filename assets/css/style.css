@@ -344,7 +344,9 @@ a.page-link:before { content: "» "; }
 .social-media-list a, .pagination a { line-height: 0px; }
 
 /* List style fix (Bulma) */
-article ul, ol { list-style: initial !important; margin-left: 30px !important; }
+article ul, ol { margin-left: 30px !important; margin-bottom: 16px !important; }
+
+article ul { list-style: initial !important; }
 
 ul.social-media-list, ul.pagination { list-style: none !important; margin: auto !important; }
 
@@ -355,7 +357,10 @@ h2, h3 { margin-top: initial !important; }
 pre.highlight { margin: 1em; border: none; }
 
 /* Table fix */
-article table { display: block; overflow-x: auto; }
+.table-overflow { display: block; overflow-x: auto; }
+
+/* Blockquote fix */
+blockquote p { padding: 0.5rem; }
 
 /* Bulma preload fix */
 html { box-sizing: border-box; }
